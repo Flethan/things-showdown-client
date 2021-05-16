@@ -26,10 +26,10 @@ Dex.includeData();
 console.log("DONE");
 
 function es3stringify(obj) {
-	const buf = JSON.stringify(obj);
-	return buf.replace(/\"([A-Za-z][A-Za-z0-9]*)\"\:/g, (fullMatch, key) => (
-		['return', 'new', 'delete'].includes(key) ? fullMatch : `${key}:`
-	));
+	let buf = JSON.stringify(obj);
+	buf = buf.replace(/\"([A-Za-z][A-Za-z0-9]*)\"\:/g, '$1:');
+	buf = buf.replace(/return\:/g, '"return":').replace(/new\:/g, '"new":').replace(/delete\:/g, '"delete":');
+	return buf;
 }
 
 function requireNoCache(pathSpec) {
@@ -53,7 +53,7 @@ function requireNoCache(pathSpec) {
 	index = index.concat(Object.keys(Dex.data.TypeChart).map(x => toID(x) + ' type'));
 	index = index.concat(['physical', 'special', 'status'].map(x => toID(x) + ' category'));
 	index = index.concat(['monster', 'water1', 'bug', 'flying', 'field', 'fairy', 'grass', 'humanlike', 'water3', 'mineral', 'amorphous', 'water2', 'ditto', 'dragon', 'undiscovered'].map(x => toID(x) + ' egggroup'));
-	index = index.concat(['ou', 'uu', 'ru', 'nu', 'pu', 'lc', 'nfe', 'uber', 'uubl', 'rubl', 'nubl', 'publ', 'cap', 'caplc', 'capnfe'].map(x => toID(x) + ' tier'));
+	index = index.concat(['thing','ou', 'uu', 'ru', 'nu', 'pu', 'lc', 'nfe', 'uber', 'uubl', 'rubl', 'nubl', 'publ', 'cap', 'caplc', 'capnfe'].map(x => toID(x) + ' tier'));
 
 	let BattleArticleTitles = {};
 
@@ -97,42 +97,10 @@ function requireNoCache(pathSpec) {
 			return;
 		}
 		let oldI = i;
-		if (name === 'Alakazam') i = 5;
-		if (name === 'Arctovish') i = 5;
-		if (name === 'Arctozolt') i = 5;
-		if (name === 'Articuno') i = 5;
-		if (name === 'Breloom') i = 3;
 		if (name === 'Bronzong') i = 4;
-		if (name === 'Celebi') i = 4;
 		if (name === 'Charizard') i = 5;
-		if (name === 'Donphan') i = 3;
-		if (name === 'Dracovish') i = 5;
-		if (name === 'Dracozolt') i = 5;
-		if (name === 'Dragapult') i = 5;
-		if (name === 'Dusclops') i = 3;
-		if (name === 'Electabuzz') i = 6;
-		if (name === 'Exeggutor') i = 2;
 		if (name === 'Garchomp') i = 3;
 		if (name === 'Hariyama') i = 4;
-		if (name === 'Magearna') i = 2;
-		if (name === 'Magnezone') i = 5;
-		if (name === 'Mamoswine') i = 4;
-		if (name === 'Moltres') i = 3;
-		if (name === 'Nidoking') i = 4;
-		if (name === 'Nidoqueen') i = 4;
-		if (name === 'Nidorina') i = 4;
-		if (name === 'Nidorino') i = 4;
-		if (name === 'Regice') i = 3;
-		if (name === 'Regidrago') i = 4;
-		if (name === 'Regieleki') i = 4;
-		if (name === 'Regigigas') i = 4;
-		if (name === 'Regirock') i = 4;
-		if (name === 'Registeel') i = 4;
-		if (name === 'Slowbro') i = 4;
-		if (name === 'Slowking') i = 4;
-		if (name === 'Starmie') i = 4;
-		if (name === 'Tyranitar') i = 6;
-		if (name === 'Zapdos') i = 3;
 
 		if (name === 'Acupressure') i = 3;
 		if (name === 'Aromatherapy') i = 5;
@@ -196,8 +164,6 @@ function requireNoCache(pathSpec) {
 			index.push('wupslap ' + type + ' ' + id + ' 0');
 		} else if (name === 'Zen Headbutt') {
 			index.push('zhbutt ' + type + ' ' + id + ' 0');
-		} else if (name === 'Articuno') {
-			index.push('cuno ' + type + ' ' + id + ' 4');
 		}
 
 		let i2 = name.lastIndexOf(' ', i - 1);
@@ -486,7 +452,12 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		const items = [];
 		const formatSlices = {};
 
-		if (isNatDex) {
+		 if (isThings) {
+			BattleTeambuilderTable['things'] = {};
+			BattleTeambuilderTable['things'].tiers = tiers;
+			BattleTeambuilderTable['things'].items = items;
+			BattleTeambuilderTable['things'].formatSlices = formatSlices;
+		} else if (isNatDex) {
 			BattleTeambuilderTable['natdex'] = {};
 			BattleTeambuilderTable['natdex'].tiers = tiers;
 			BattleTeambuilderTable['natdex'].items = items;
@@ -538,6 +509,9 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 		}
 
 		const tierOrder = (() => {
+			if (isThings) {
+				return ["Thing"];
+			}
 			if (isNatDex) {
 				return ["CAP", "CAP NFE", "CAP LC", "AG", "Uber", "OU", "UUBL", "(OU)", "UU", "(UU)", "NFE", "LC"];
 			}
@@ -550,7 +524,10 @@ process.stdout.write("Building `data/teambuilder-tables.js`... ");
 			if (isDoubles && genNum > 4) {
 				return ["DUber", "(DUber)", "DOU", "DBL", "(DOU)", "DUU", "(DUU)", "New", "NFE", "LC"];
 			}
-			if (gen === 'gen1' || gen === 'gen2' || gen === 'gen3') {
+			if (gen === 'gen1') {
+				return ["Uber", "OU", "UUBL", "UU", "NFE", "LC"];
+			}
+			if (gen === 'gen2' || gen === 'gen3') {
 				return ["Uber", "OU", "UUBL", "UU", "NUBL", "NU", "PUBL", "PU", "NFE", "LC"];
 			}
 			if (gen === 'gen4') {
@@ -1082,7 +1059,6 @@ process.stdout.write("Building `data/pokedex.js`... ");
 	}
 	const buf = 'exports.BattlePokedex = ' + es3stringify(Pokedex) + ';';
 	fs.writeFileSync('data/pokedex.js', buf);
-	fs.writeFileSync('data/pokedex.json', JSON.stringify(Pokedex));
 }
 
 console.log("DONE");
@@ -1102,7 +1078,6 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 	}
 	const buf = 'exports.BattleMovedex = ' + es3stringify(Moves) + ';';
 	fs.writeFileSync('data/moves.js', buf);
-	fs.writeFileSync('data/moves.json', JSON.stringify(Moves));
 }
 
 /*********************************************************
@@ -1112,9 +1087,9 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 {
 	const Items = requireNoCache('../data/Showdown-experiment/pokemon-showdown/.data-dist/items.js').Items;
 	for (const id in Items) {
-		const item = Dex.getItem(Items[id].name);
-		if (item.desc) Items[id].desc = item.desc;
-		if (item.shortDesc) Items[id].shortDesc = item.shortDesc;
+		const move = Dex.getItem(Items[id].name);
+		if (move.desc) Items[id].desc = move.desc;
+		if (move.shortDesc) Items[id].shortDesc = move.shortDesc;
 	}
 	const buf = 'exports.BattleItems = ' + es3stringify(Items) + ';';
 	fs.writeFileSync('data/items.js', buf);
@@ -1127,9 +1102,9 @@ process.stdout.write("Building `data/moves,items,abilities,typechart,learnsets.j
 {
 	const Abilities = requireNoCache('../data/Showdown-experiment/pokemon-showdown/.data-dist/abilities.js').Abilities;
 	for (const id in Abilities) {
-		const ability = Dex.getAbility(Abilities[id].name);
-		if (ability.desc) Abilities[id].desc = ability.desc;
-		if (ability.shortDesc) Abilities[id].shortDesc = ability.shortDesc;
+		const move = Dex.getAbility(Abilities[id].name);
+		if (move.desc) Abilities[id].desc = move.desc;
+		if (move.shortDesc) Abilities[id].shortDesc = move.shortDesc;
 	}
 	const buf = 'exports.BattleAbilities = ' + es3stringify(Abilities) + ';';
 	fs.writeFileSync('data/abilities.js', buf);
