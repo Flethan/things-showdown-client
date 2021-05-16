@@ -51,7 +51,7 @@
 
 		focus: function (e, focusTextbox) {
 			var target = e && e.target;
-			if (target && ['TEXTAREA', 'INPUT'].includes(target.tagName)) {
+			if (target && ['TEXTAREA', 'INPUT', 'SELECT'].includes(target.tagName)) {
 				// this workaround works for iOS 12 but not iOS 13
 				/* if (window.isiOS) {
 					// iOS will not bring up a keyboard unless you manually blur and refocus
@@ -127,7 +127,11 @@
 			this.tabComplete.reset();
 			this.chatHistory.push(text);
 			text = this.parseCommand(text);
-			if (this.battle && this.battle.ignoreSpects && app.user.get('userid') !== this.battle.p1.id && app.user.get('userid') !== this.battle.p2.id) {
+			if (
+				this.battle && this.battle.ignoreSpects &&
+				app.user.get('userid') !== this.battle.p1.id && app.user.get('userid') !== this.battle.p2.id &&
+				!(text.startsWith('/') && !text.startsWith('/me'))
+			) {
 				this.add("You can't chat in this battle as you're currently ignoring spectators");
 			} else if (text.length > 80000) {
 				app.addPopupMessage("Your message is too long.");
@@ -1742,6 +1746,10 @@
 
 			var isHighlighted = userid !== app.user.get('userid') && this.getHighlight(message);
 			var parsedMessage = MainMenuRoom.parseChatMessage(message, name, ChatRoom.getTimestamp('chat', msgTime), isHighlighted, this.$chat, true);
+			if (typeof parsedMessage.challenge === 'string') {
+				this.$chat.append('<div class="chat message-error">The server sent a challenge but this isn\'t a PM window!</div>');
+				return;
+			}
 			if (typeof parsedMessage === 'object' && 'noNotify' in parsedMessage) {
 				mayNotify = mayNotify && !parsedMessage.noNotify;
 				parsedMessage = parsedMessage.message;

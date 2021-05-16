@@ -402,7 +402,7 @@ function toId() {
 			this.supports = {};
 
 			// down
-			// if (document.location.hostname === 'play.pokemonshowdown.com') this.down = 'dos';
+			// if (document.location.hostname === 'play.pokemonshowdown.com') this.down = true;
 
 			this.addRoom('');
 			this.topbar = new Topbar({el: $('#header')});
@@ -816,7 +816,7 @@ function toId() {
 		 * Send to sim server
 		 */
 		send: function (data, room) {
-			if (room && room !== 'lobby' && room !== true) {
+			if (room && room !== true) {
 				data = room + '|' + data;
 			} else if (room !== true) {
 				data = '|' + data;
@@ -831,15 +831,18 @@ function toId() {
 			}
 			this.socket.send(data);
 		},
-		serializeForm: function (form) {
+		serializeForm: function (form, checkboxOnOff) {
 			// querySelector dates back to IE8 so we can use it
 			// fortunate, because form serialization is a HUGE MESS in older browsers
 			var elements = form.querySelectorAll('input[name], select[name], textarea[name], keygen[name]');
 			var out = [];
 			for (var i = 0; i < elements.length; i++) {
 				var element = elements[i];
-				// TODO: values are a mess in the DOM; checkboxes/select probably need special handling
-				out.push([element.name, element.value]);
+				if (element.type === 'checkbox' && !element.value && checkboxOnOff) {
+					out.push([element.name, element.checked ? 'on' : 'off']);
+				} else if (!['checkbox', 'radio'].includes(element.type) || element.checked) {
+					out.push([element.name, element.value]);
+				}
 			}
 			return out;
 		},
@@ -852,10 +855,11 @@ function toId() {
 			var dataSend = target.getAttribute('data-submitsend');
 			if (dataSend) {
 				var toSend = dataSend;
-				var entries = this.serializeForm(target);
+				var entries = this.serializeForm(target, true);
 				for (var i = 0; i < entries.length; i++) {
 					toSend = toSend.replace('{' + entries[i][0] + '}', entries[i][1]);
 				}
+				toSend = toSend.replace(/\{[a-z]+\}/g, '');
 				this.send(toSend);
 				e.currentTarget.innerText = 'Submitted!';
 				e.preventDefault();
@@ -1208,6 +1212,7 @@ function toId() {
 			var column = 0;
 			var columnChanged = false;
 
+			window.NonBattleGames = {rps: 'Rock Paper Scissors'};
 			window.BattleFormats = {};
 			for (var j = 1; j < formatsList.length; j++) {
 				if (isSection) {
@@ -1536,9 +1541,9 @@ function toId() {
 
 			// otherwise, infer the room type
 			if (!type) {
-				if (id.slice(0, 7) === 'battle-') {
+				if (id.startsWith('battle-') || id.startsWith('game-')) {
 					type = BattleRoom;
-				} else if (id.slice(0, 5) === 'view-') {
+				} else if (id.startsWith('view-')) {
 					type = HTMLRoom;
 				} else {
 					type = ChatRoom;
@@ -2604,11 +2609,11 @@ function toId() {
 				buf += '<span class="userstatus' + (offline ? ' offline' : '') + '">' + BattleLog.escapeHTML(status) + '<br /></span>';
 			}
 			if (groupName) {
-				buf += '<small class="usergroup roomgroup">' + BattleLog.escapeHTML(groupName) + '</small>';
+				buf += '<small class="usergroup roomgroup">' + groupName + '</small>';
 				if (globalGroupName) buf += '<br />';
 			}
 			if (globalGroupName) {
-				buf += '<small class="usergroup globalgroup">' + BattleLog.escapeHTML(globalGroupName) + '</small>';
+				buf += '<small class="usergroup globalgroup">' + globalGroupName + '</small>';
 			}
 			if (data.customgroup) {
 				if (groupName || globalGroupName) buf += '<br />';

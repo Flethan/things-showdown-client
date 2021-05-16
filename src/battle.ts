@@ -31,7 +31,6 @@
 type EffectState = any[] & {0: ID};
 /** [name, minTimeLeft, maxTimeLeft] */
 type WeatherState = [string, number, number];
-type EffectTable = {[effectid: string]: EffectState};
 type HPColor = 'r' | 'y' | 'g';
 
 class Pokemon implements PokemonDetails, PokemonHealth {
@@ -91,9 +90,9 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	boosts: {[stat: string]: number} = {};
 	status: StatusName | 'tox' | '' | '???' = '';
 	statusStage = 0;
-	volatiles: EffectTable = {};
-	turnstatuses: EffectTable = {};
-	movestatuses: EffectTable = {};
+	volatiles: {[effectid: string]: EffectState} = {};
+	turnstatuses: {[effectid: string]: EffectState} = {};
+	movestatuses: {[effectid: string]: EffectState} = {};
 	lastMove = '';
 
 	/** [[moveName, ppUsed]] */
@@ -437,6 +436,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 			delete this.volatiles['disable'];
 			delete this.volatiles['encore'];
 			delete this.volatiles['foresight'];
+			delete this.volatiles['gmaxchistrike'];
 			delete this.volatiles['imprison'];
 			delete this.volatiles['laserfocus'];
 			delete this.volatiles['mimic'];
@@ -1320,11 +1320,11 @@ class Battle {
 				if (cond[2]) cond[2]--;
 				if (cond[3]) cond[3]--;
 			}
-			for (const poke of side.active) {
-				if (poke) {
-					if (poke.status === 'tox') poke.statusData.toxicTurns++;
-					poke.clearTurnstatuses();
-				}
+		}
+		for (const poke of [...this.nearSide.active, ...this.farSide.active]) {
+			if (poke) {
+				if (poke.status === 'tox') poke.statusData.toxicTurns++;
+				poke.clearTurnstatuses();
 			}
 		}
 		this.scene.updateWeather();
@@ -1934,7 +1934,6 @@ class Battle {
 			let effect = Dex.getEffect(kwArgs.from);
 			let ofpoke = this.getPokemon(kwArgs.of) || poke;
 			poke.status = args[2] as StatusName;
-			poke.removeVolatile('yawn' as ID);
 			this.activateAbility(ofpoke || poke, effect);
 			if (effect.effectType === 'Item') {
 				ofpoke.item = effect.name;
@@ -2260,7 +2259,8 @@ class Battle {
 			poke.boosts = {...tpoke.boosts};
 			poke.copyTypesFrom(tpoke);
 			poke.ability = tpoke.ability;
-			const speciesForme = (tpoke.volatiles.formechange ? tpoke.volatiles.formechange[1] : tpoke.speciesForme);
+			const targetForme = tpoke.volatiles.formechange;
+			const speciesForme = (targetForme && !targetForme[1].endsWith('-Gmax')) ? targetForme[1] : tpoke.speciesForme;
 			const pokemon = tpoke;
 			const shiny = tpoke.shiny;
 			const gender = tpoke.gender;
@@ -2731,6 +2731,9 @@ class Battle {
 				break;
 			case 'focusband':
 				poke.item = 'Focus Band';
+				break;
+			case 'quickclaw':
+				poke.item = 'Quick Claw';
 				break;
 			default:
 				if (kwArgs.broken) { // for custom moves that break protection
@@ -3285,6 +3288,18 @@ class Battle {
 			let pokemon = this.rememberTeamPreviewPokemon(args[1], args[2])!;
 			if (args[3] === 'item') {
 				pokemon.item = '(exists)';
+			}
+			break;
+		}
+		case 'updatepoke': {
+			const {siden} = this.parsePokemonId(args[1]);
+			const side = this.sides[siden];
+			for (let i = 0; i < side.pokemon.length; i++) {
+				const pokemon = side.pokemon[i];
+				if (pokemon.details !== args[2] && pokemon.checkDetails(args[2])) {
+					side.addPokemon('', '', args[2], i);
+					break;
+				}
 			}
 			break;
 		}
