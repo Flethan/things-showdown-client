@@ -1323,6 +1323,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 
 		const moveData = BattleMovedex[id];
 		if (!moveData) return true;
+		if (moveData.isNonstandard === 'Thing') return true;
 		if (moveData.category === 'Status') {
 			return BattleMoveSearch.GOOD_STATUS_MOVES.includes(id);
 		}
