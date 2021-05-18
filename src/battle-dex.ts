@@ -180,7 +180,7 @@ const Dex = new class implements ModdedDex {
 	pokeballs: string[] | null = null;
 
 	resourcePrefix = (() => {
-		return `./`;
+		return `https://raw.githubusercontent.com/Flethan/things-showdown/master/`;
 	})();
 
 	fxPrefix = (() => {
