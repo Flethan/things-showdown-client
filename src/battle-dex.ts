@@ -180,15 +180,11 @@ const Dex = new class implements ModdedDex {
 	pokeballs: string[] | null = null;
 
 	resourcePrefix = (() => {
-		return `https://raw.githubusercontent.com/Flethan/things-showdown/master/`;
+		return `https://raw.githubusercontent.com/Flethan/things-showdown/master/images/`;
 	})();
 
 	fxPrefix = (() => {
-		if (window.document?.location?.protocol === 'file:') {
-			if (window.Replays) return `https://${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
-			return `fx/`;
-		}
-		return `//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
+		return `https://raw.githubusercontent.com/Flethan/things-showdown/master/images/fx/`;
 	})();
 
 	loadedSpriteData = {xy: 1, bw: 0};
