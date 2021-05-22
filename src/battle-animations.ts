@@ -1727,6 +1727,21 @@ class Sprite {
 class PokemonSprite extends Sprite {
 	// HTML strings are constructed from this table and stored back in it to cache them
 	protected static statusTable: {[id: string]: [string, 'good' | 'bad' | 'neutral'] | null | string} = {
+		// THINGS
+		ecdyse: ['Ecdyse', 'bad'],
+		depthvanish: ['Depth Vanish', 'good'],
+		hbond: ['H Bond', 'bad'],
+		shrinkwrap: ['Shrink Wraped', 'bad'],
+		calibration: ['Calibrated', 'good'],
+		hypnoticmelody: ['Hypnotized', 'bad'],
+		study: ['Studied', 'bad'],
+		wager: ['Wagered', 'bad'],
+		counterthrow: ['Counter Throw', 'good'],
+		coagulate: ['Coagulated', 'good'],
+		fireworked: ['Fireworks!', 'good'],
+		vetoslip: ['Veto', 'bad'],
+		vetoed: ['Vetoed', 'neutral'],
+		// BASE GAME
 		formechange: null,
 		typechange: null,
 		typeadd: null,
@@ -2699,6 +2714,18 @@ class PokemonSprite extends Sprite {
 			status += '<span class="par">PAR</span> ';
 		} else if (pokemon.status === 'frz') {
 			status += '<span class="frz">FRZ</span> ';
+		} else if (pokemon.status === 'prone') {
+			status += '<span class="prone">PRONE</span> ';
+		} else if (pokemon.status === 'banished') {
+			status += '<span class="banished">BANISHED</span> ';
+		} else if (pokemon.status === 'blinded') {
+			status += '<span class="blinded">BLINDED</span> ';
+		} else if (pokemon.status === 'pressurized') {
+			status += '<span class="pressurized">PRESSURIZED</span> ';
+		} else if (pokemon.status === 'fluctuant') {
+			status += '<span class="fluctuant">FLUCTUANT</span> ';
+		} else if (pokemon.status === 'wounded') {
+			status += '<span class="wounded">WOUNDED</span> ';
 		}
 		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
 			let types = pokemon.volatiles.typechange[1].split('/');

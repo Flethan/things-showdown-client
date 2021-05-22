@@ -249,7 +249,13 @@ License: GPLv2
 .statbar span.psn,
 .statbar span.slp,
 .statbar span.par,
-.statbar span.frz {
+.statbar span.frz,
+.statbar span.prone,
+.statbar span.banished,
+.statbar span.blinded,
+.statbar span.pressurized,
+.statbar span.fluctuant,
+.statbar span.wounded {
 	padding: 1px 2px;
 	border: 0;
 	border-radius: 3px;
@@ -273,6 +279,30 @@ License: GPLv2
 .statbar span.frz {
 	background: #009AA4;
 	color: #FFFFFF;
+}
+.statbar span.prone {
+	background: #a2c4c9;
+	color: #000000;
+}
+.statbar span.banished {
+	background: #999999;
+	color: #000000;
+}
+.statbar span.blinded {
+	background: #b4a7d6;
+	color: #000000;
+}
+.statbar span.pressurized {
+	background: #45818e;
+	color: #000000;
+}
+.statbar span.fluctuant {
+	background: linear-gradient(25deg, #6d9eeb 30%, #e06666 70%);
+	color: #000000;
+}
+.statbar span.wounded {
+	background: #cc4125;
+	color: #000000;
 }
 .statbar span.bad {
 	background: #FFE5E0;
@@ -509,6 +539,30 @@ License: GPLv2
 .battle .frzresult strong {
 	color: #FFFFFF;
 	background: #009AA4;
+}
+.battle .proneresult strong {
+	background: #a2c4c9;
+	color: #000000;
+}
+.battle .banishedresult strong {
+	background: #999999;
+	color: #000000;
+}
+.battle .blindedresult strong {
+	background: #b4a7d6;
+	color: #000000;
+}
+.battle .pressurizedresult strong {
+	background: #45818e;
+	color: #000000;
+}
+.battle .fluctuantresult strong {
+	background: linear-gradient(25deg, #6d9eeb 30%, #e06666 70%);
+	color: #000000;
+}
+.battle .woundedresult strong {
+	background: #cc4125;
+	color: #000000;
 }
 .battle .abilityresult strong {
 	color: #FFFFFF;
