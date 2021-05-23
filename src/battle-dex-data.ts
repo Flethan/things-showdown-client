@@ -515,6 +515,9 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	justyke: 1344 + 30,
 	solotl: 1344 + 31,
 	miasmite: 1344 + 32,
+	// THINGS
+	e1: 1345 + 0,
+	hellow: 1345 + 1,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
@@ -624,6 +627,9 @@ const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	necrozmaultra: 1200 + 103,
 	stakataka: 1200 + 104,
 	blacephalon: 1200 + 105,
+	// THINGS
+	e1: 1347 + 0,
+	hellow: 1347 + 1,
 };
 
 const BattleAvatarNumbers: {[k: string]: string} = {
