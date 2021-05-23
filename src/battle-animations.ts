@@ -1727,21 +1727,6 @@ class Sprite {
 class PokemonSprite extends Sprite {
 	// HTML strings are constructed from this table and stored back in it to cache them
 	protected static statusTable: {[id: string]: [string, 'good' | 'bad' | 'neutral'] | null | string} = {
-		// THINGS
-		ecdyse: ['Ecdyse', 'bad'],
-		depthvanish: ['Depth Vanish', 'good'],
-		hbond: ['H Bond', 'bad'],
-		shrinkwrap: ['Shrink Wraped', 'bad'],
-		calibration: ['Calibrated', 'good'],
-		hypnoticmelody: ['Hypnotized', 'bad'],
-		study: ['Studied', 'bad'],
-		wager: ['Wagered', 'bad'],
-		counterthrow: ['Counter Throw', 'good'],
-		coagulate: ['Coagulated', 'good'],
-		fireworked: ['Fireworks!', 'good'],
-		vetoslip: ['Veto', 'bad'],
-		vetoed: ['Vetoed', 'neutral'],
-		// BASE GAME
 		formechange: null,
 		typechange: null,
 		typeadd: null,
@@ -1835,6 +1820,20 @@ class PokemonSprite extends Sprite {
 		// Gen 1
 		lightscreen: ['Light Screen', 'good'],
 		reflect: ['Reflect', 'good'],
+		// THINGS
+		ecdyse: ['Ecdyse', 'bad'],
+		depthvanish: ['Depth Vanish', 'good'],
+		hbond: ['H Bond', 'bad'],
+		shrinkwrap: ['Shrink Wrapped', 'bad'],
+		calibration: ['Calibrated', 'good'],
+		hypnoticmelody: ['Hypnotized', 'bad'],
+		study: ['Studied', 'bad'],
+		wager: ['Wagered', 'bad'],
+		counterthrow: ['Countering', 'good'],
+		coagulate: ['Coagulated', 'good'],
+		fireworked: ['Fireworks!', 'good'],
+		vetoslip: ['Veto', 'bad'],
+		vetoed: ['Vetoed', 'neutral'],
 	};
 	forme = '';
 	cryurl: string | undefined = undefined;

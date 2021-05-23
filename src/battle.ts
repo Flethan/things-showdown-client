@@ -2457,6 +2457,47 @@ class Battle {
 			case 'reflect':
 				this.scene.resultAnim(poke, 'Reflect', 'good');
 				break;
+			
+			// THINGS
+			case 'ecdyse':
+				this.scene.resultAnim(poke, 'Ecdyse', 'bad');
+				break;
+			case 'depthvanish':
+				this.scene.resultAnim(poke, 'Depth Vanish', 'good');
+				break;
+			case 'hbond':
+				this.scene.resultAnim(poke, 'H Bond', 'bad');
+				break;
+			case 'shrinkwrap':
+				this.scene.resultAnim(poke, 'Shrink Wrapped', 'bad');
+				break;
+			case 'apexcalibration':
+				this.scene.resultAnim(poke, 'Calibrated', 'good');
+				break;
+			case 'hypnoticmelody':
+				this.scene.resultAnim(poke, 'Hypnotized', 'bad');
+				break;
+			case 'study':
+				this.scene.resultAnim(poke, 'Studied', 'bad');
+				break;
+			case 'wager':
+				this.scene.resultAnim(poke, 'Wagered', 'bad');
+				break;
+			case 'counterthrow':
+				this.scene.resultAnim(poke, 'Counter Throw', 'good');
+				break;
+			case 'coagulate':
+				this.scene.resultAnim(poke, 'Coagulated', 'good');
+				break;
+			case 'fireworked':
+				this.scene.resultAnim(poke, 'Fireworks!', 'good');
+				break;
+			case 'vetoslip':
+				this.scene.resultAnim(poke, 'Veto', 'bad');
+				break;
+			case 'vetoed':
+				this.scene.resultAnim(poke, 'Vetoed', 'neutral');
+				break;
 			}
 			poke.addVolatile(effect.id);
 			this.scene.updateStatbar(poke);

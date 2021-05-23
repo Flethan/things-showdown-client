@@ -32116,6 +32116,9 @@ const BattleMoveAnims: AnimTable = {
 	},
 };
 
+// THINGS
+BattleMoveAnims['study'] = {anim: BattleMoveAnims['mudbomb'].anim};
+
 // placeholder animations
 BattleMoveAnims['torment'] = {anim: BattleMoveAnims['swagger'].anim};
 
