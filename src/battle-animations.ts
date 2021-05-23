@@ -1771,7 +1771,7 @@ class PokemonSprite extends Sprite {
 		slowstart: ['Slow Start', 'bad'],
 		noretreat: ['No Retreat', 'bad'],
 		octolock: ['Octolock', 'bad'],
-		tarshot: ['Tar Shot', 'bad'],
+		tarshot: ['Car Shot', 'good'],
 		doomdesire: null,
 		futuresight: null,
 		mimic: ['Mimic', 'good'],
