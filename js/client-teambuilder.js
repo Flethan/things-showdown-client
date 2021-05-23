@@ -1116,7 +1116,7 @@
 					buf += ' <button name="validate" class="' + btnClass + '"><i class="fa fa-check"></i> Validate</button></li>';
 				}
 				if (!this.curSetList.length) {
-					buf += '<li><em>you have no pokemon lol</em></li>';
+					buf += '<li><em>you have no things lol</em></li>';
 				}
 				for (i = 0; i < this.curSetList.length; i++) {
 					if (this.curSetList.length < this.curTeam.capacity && this.deletedSet && i === this.deletedSetLoc) {

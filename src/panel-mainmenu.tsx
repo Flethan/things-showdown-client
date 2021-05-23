@@ -145,7 +145,7 @@ class MainMenuRoom extends PSRoom {
 				let teambuilderFormatName = '';
 				if (isTeambuilderFormat) {
 					teambuilderFormatName = name;
-					if (id.slice(0, 3) !== 'gen') {
+					if (id.slice(0, 3) !== 'gen' && id.slice(0, 3) !== 'thi') {
 						teambuilderFormatName = '[Gen 6] ' + name;
 					}
 					let parenPos = teambuilderFormatName.indexOf('(');
