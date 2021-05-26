@@ -518,6 +518,13 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	// THINGS
 	e1: 1380 + 0,
 	hellow: 1380 + 1,
+	yellosnow: 1380 + 2,
+	yellowater: 1380 + 3,
+	hmug: 1380 + 4,
+	hubert: 1380 + 5,
+	swordhubert: 1380 + 6,
+	undulux: 1380 + 7,
+	unduluxoverheated: 1380 + 12,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
@@ -630,6 +637,11 @@ const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	// THINGS
 	e1: 1380 + 24,
 	hellow: 1380 + 25,
+	yellowater: 1380 + 26,
+	hmug: 1380 + 27,
+	swordhubert: 1380 + 28,
+	undulux: 1380 + 29,
+	unduluxoverheated: 1380 + 30,
 };
 
 const BattleAvatarNumbers: {[k: string]: string} = {
