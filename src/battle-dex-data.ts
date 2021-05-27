@@ -525,6 +525,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	swordhubert: 1380 + 6,
 	undulux: 1380 + 7,
 	godbye: 1380 + 8,
+	uwu: 1380 + 9,
 	unduluxoverheated: 1380 + 12,
 };
 
@@ -644,6 +645,7 @@ const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
 	undulux: 1380 + 29,
 	unduluxoverheated: 1380 + 30,
 	godbye: 1380 + 31,
+	uwu: 1380 + 32,
 };
 
 const BattleAvatarNumbers: {[k: string]: string} = {
