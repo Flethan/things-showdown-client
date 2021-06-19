@@ -528,6 +528,8 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	uwu: 1380 + 9,
 	sarcopharyn: 1380 + 10,
 	unduluxoverheated: 1380 + 12,
+	pescadestrian: 1380 + 13,
+	pescadestrianf: 1380 + 14,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {
