@@ -27,13 +27,17 @@
  * @license MIT
  */
 
-/** [id, element?, ...misc] */
-type EffectState = any[] & {0: ID};
-/** [name, minTimeLeft, maxTimeLeft] */
-type WeatherState = [string, number, number];
-type HPColor = 'r' | 'y' | 'g';
+import {BattleSceneStub} from './battle-scene-stub';
+import {BattleLog} from './battle-log';
+import {BattleScene, PokemonSprite, BattleStatusAnims} from './battle-animations';
 
-class Pokemon implements PokemonDetails, PokemonHealth {
+/** [id, element?, ...misc] */
+export type EffectState = any[] & {0: ID};
+/** [name, minTimeLeft, maxTimeLeft] */
+export type WeatherState = [string, number, number];
+export type HPColor = 'r' | 'y' | 'g';
+
+export class Pokemon implements PokemonDetails, PokemonHealth {
 	name = '';
 	speciesForme = '';
 
@@ -493,7 +497,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		}
 
 		let item = toID(serverPokemon ? serverPokemon.item : this.item);
-		let ability = toID(this.ability || serverPokemon?.ability);
+		let ability = toID(this.effectiveAbility(serverPokemon));
 		if (battle.hasPseudoWeather('Magic Room') || this.volatiles['embargo'] || ability === 'klutz') {
 			item = '' as ID;
 		}
@@ -511,6 +515,16 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 			return false;
 		}
 		return !this.getTypeList(serverPokemon).includes('Flying');
+	}
+	effectiveAbility(serverPokemon?: ServerPokemon) {
+		if (this.fainted || this.volatiles['gastroacid']) return '';
+		const ability = this.side.battle.dex.abilities.get(
+			serverPokemon?.ability || this.ability || serverPokemon?.baseAbility || ''
+		);
+		if (this.side.battle.ngasActive() && !ability.isPermanent) {
+			return '';
+		}
+		return ability.name;
 	}
 	getTypeList(serverPokemon?: ServerPokemon) {
 		const [types, addedType] = this.getTypes(serverPokemon);
@@ -560,6 +574,9 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		}
 		return percentage * maxWidth / 100;
 	}
+	getHPText(precision = 1) {
+		return Pokemon.getHPText(this, precision);
+	}
 	static getHPText(pokemon: PokemonHealth, precision = 1) {
 		if (pokemon.maxhp === 100) return pokemon.hp + '%';
 		if (pokemon.maxhp !== 48) return (100 * pokemon.hp / pokemon.maxhp).toFixed(precision) + '%';
@@ -573,7 +590,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	}
 }
 
-class Side {
+export class Side {
 	battle: Battle;
 	name = '';
 	id = '';
@@ -922,7 +939,7 @@ class Side {
 	}
 }
 
-interface PokemonDetails {
+export interface PokemonDetails {
 	details: string;
 	name: string;
 	speciesForme: string;
@@ -932,14 +949,14 @@ interface PokemonDetails {
 	ident: string;
 	searchid: string;
 }
-interface PokemonHealth {
+export interface PokemonHealth {
 	hp: number;
 	maxhp: number;
 	hpcolor: HPColor | '';
 	status: StatusName | 'tox' | '' | '???';
 	fainted?: boolean;
 }
-interface ServerPokemon extends PokemonDetails, PokemonHealth {
+export interface ServerPokemon extends PokemonDetails, PokemonHealth {
 	ident: string;
 	details: string;
 	condition: string;
@@ -966,8 +983,8 @@ interface ServerPokemon extends PokemonDetails, PokemonHealth {
 	gigantamax: string | false;
 }
 
-class Battle {
-	scene: BattleScene | BattleSceneStub;
+export class Battle {
+	scene: BattleSceneStub;
 
 	sidesSwitched = false;
 
@@ -1134,6 +1151,30 @@ class Battle {
 		for (const [pseudoWeatherName] of this.pseudoWeather) {
 			if (weather === pseudoWeatherName) {
 				return true;
+			}
+		}
+		return false;
+	}
+	ngasActive() {
+		for (const side of this.sides) {
+			for (const active of side.active) {
+				if (active && !active.fainted && active.ability === 'Neutralizing Gas' && !active.volatiles['gastroacid']) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	abilityActive(abilities: string[]) {
+		if (this.ngasActive()) {
+			abilities = abilities.filter(a => this.dex.abilities.get(a).isPermanent);
+			if (!abilities.length) return false;
+		}
+		for (const side of this.sides) {
+			for (const active of side.active) {
+				if (active && !active.fainted && abilities.includes(active.ability) && !active.volatiles['gastroacid']) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -1309,6 +1350,35 @@ class Battle {
 		this.weather = weather;
 		this.scene.updateWeather();
 	}
+	swapSideConditions() {
+		const sideConditions = [
+			'mist', 'lightscreen', 'reflect', 'spikes', 'safeguard', 'tailwind', 'toxicspikes', 'stealthrock', 'waterpledge', 'firepledge', 'grasspledge', 'stickyweb', 'auroraveil', 'gmaxsteelsurge', 'gmaxcannonade', 'gmaxvinelash', 'gmaxwildfire',
+		];
+		if (this.gameType === 'freeforall') {
+			// TODO: Add FFA support
+			return;
+		} else {
+			let side1 = this.sides[0];
+			let side2 = this.sides[1];
+			for (const id of sideConditions) {
+				if (side1.sideConditions[id] && side2.sideConditions[id]) {
+					[side1.sideConditions[id], side2.sideConditions[id]] = [
+						side2.sideConditions[id], side1.sideConditions[id],
+					];
+					this.scene.addSideCondition(side1.n, id as ID);
+					this.scene.addSideCondition(side2.n, id as ID);
+				} else if (side1.sideConditions[id] && !side2.sideConditions[id]) {
+					side2.sideConditions[id] = side1.sideConditions[id];
+					this.scene.addSideCondition(side2.n, id as ID);
+					side1.removeSideCondition(id);
+				} else if (side2.sideConditions[id] && !side1.sideConditions[id]) {
+					side1.sideConditions[id] = side2.sideConditions[id];
+					this.scene.addSideCondition(side1.n, id as ID);
+					side2.removeSideCondition(id);
+				}
+			}
+		}
+	}
 	updateTurnCounters() {
 		for (const pWeather of this.pseudoWeather) {
 			if (pWeather[1]) pWeather[1]--;
@@ -1355,14 +1425,33 @@ class Battle {
 				}
 			}
 			let pp = 1;
-			if (move.target === "all") {
-				for (const active of pokemon.side.foe.active) {
-					if (active && toID(active.ability) === 'pressure') {
+			// Sticky Web is never affected by pressure
+			if (this.abilityActive(['Pressure']) && move.id !== 'stickyweb') {
+				const foeTargets = [];
+
+				if (
+					!target && this.gameType === 'singles' &&
+					!['self', 'allies', 'allySide', 'adjacentAlly', 'adjacentAllyOrSelf'].includes(move.target)
+				) {
+					// Hardcode for moves without a target in singles
+					foeTargets.push(pokemon.side.foe.active[0]);
+				} else if (['all', 'allAdjacent', 'allAdjacentFoes', 'foeSide'].includes(move.target)) {
+					// We loop through all sides here for FFA
+					for (const side of this.sides) {
+						if (side === pokemon.side || side === pokemon.side.ally) continue;
+						for (const active of side.active) {
+							foeTargets.push(active);
+						}
+					}
+				} else if (target && target.side !== pokemon.side) {
+					foeTargets.push(target);
+				}
+
+				for (const foe of foeTargets) {
+					if (foe && !foe.fainted && foe.effectiveAbility() === 'Pressure') {
 						pp += 1;
 					}
 				}
-			} else if (target && target.side !== pokemon.side && toID(target.ability) === 'pressure') {
-				pp += 1;
 			}
 			pokemon.rememberMove(moveName, pp);
 		}
@@ -2203,6 +2292,7 @@ class Battle {
 			} else {
 				this.activateAbility(poke, ability.name);
 			}
+			this.scene.updateWeather();
 			this.log(args, kwArgs);
 			break;
 		}
@@ -2818,6 +2908,12 @@ class Battle {
 			this.log(args, kwArgs);
 			break;
 		}
+		case '-swapsideconditions': {
+			this.swapSideConditions();
+			this.scene.updateWeather();
+			this.log(args, kwArgs);
+			break;
+		}
 		case '-weather': {
 			let effect = Dex.getEffect(args[1]);
 			let poke = this.getPokemon(kwArgs.of) || undefined;
@@ -3327,7 +3423,9 @@ class Battle {
 		}
 		case 'poke': {
 			let pokemon = this.rememberTeamPreviewPokemon(args[1], args[2])!;
-			if (args[3] === 'item') {
+			if (args[3] === 'mail') {
+				pokemon.item = '(mail)';
+			} else if (args[3] === 'item') {
 				pokemon.item = '(exists)';
 			}
 			break;
@@ -3365,6 +3463,7 @@ class Battle {
 			} else {
 				poke.side.dragIn(poke);
 			}
+			this.scene.updateWeather();
 			this.log(args, kwArgs);
 			break;
 		}
@@ -3618,7 +3717,7 @@ class Battle {
 	}
 
 	setMute(mute: boolean) {
-		BattleSound.setMute(mute);
+		this.scene.setMute(mute);
 	}
 }
 
