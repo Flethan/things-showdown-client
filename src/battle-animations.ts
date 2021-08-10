@@ -5734,6 +5734,60 @@ export const BattleOtherAnims: AnimTable = {
 	},
 };
 export const BattleStatusAnims: AnimTable = {
+	fluctuant: {
+		anim(scene, [attacker]) {
+			scene.showEffect('fireball', {
+				x: attacker.x - 20,
+				y: attacker.y - 15,
+				z: attacker.z,
+				scale: 0.2,
+				opacity: 0.3,
+			}, {
+				x: attacker.x + 40,
+				y: attacker.y + 15,
+				z: attacker.z,
+				scale: 1,
+				opacity: 1,
+				time: 300,
+			}, 'swing', 'fade');
+			scene.showEffect('icicle', {
+				x: attacker.x - 30,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.5,
+				opacity: 0.5,
+				time: 200,
+			}, {
+				scale: 0.9,
+				opacity: 0,
+				time: 600,
+			}, 'linear', 'fade');
+			scene.showEffect('icicle', {
+				x: attacker.x,
+				y: attacker.y - 30,
+				z: attacker.z,
+				scale: 0.5,
+				opacity: 0.5,
+				time: 300,
+			}, {
+				scale: 0.9,
+				opacity: 0,
+				time: 650,
+			}, 'linear', 'fade');
+			scene.showEffect('icicle', {
+				x: attacker.x + 15,
+				y: attacker.y,
+				z: attacker.z,
+				scale: 0.5,
+				opacity: 0.5,
+				time: 400,
+			}, {
+				scale: 0.9,
+				opacity: 0,
+				time: 700,
+			}, 'linear', 'fade');
+		},
+	},
 	brn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('fireball', {

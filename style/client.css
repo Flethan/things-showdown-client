@@ -2068,6 +2068,30 @@ a.ilink.yours {
 .status.frz {
 	background: #009AA4;
 }
+.status.prone {
+	background: #a2c4c9;
+	color: #000000;
+}
+.status.banished {
+	background: #999999;
+	color: #000000;
+}
+.status.blinded {
+	background: #b4a7d6;
+	color: #000000;
+}
+.status.pressurized {
+	background: #45818e;
+	color: #000000;
+}
+.status.fluctuant {
+	background: linear-gradient(25deg, #6d9eeb 30%, #e06666 70%);
+	color: #000000;
+}
+.status.wounded {
+	background: #cc4125;
+	color: #000000;
+}
 
 .movemenu button {
 	float: left;

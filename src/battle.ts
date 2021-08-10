@@ -1927,6 +1927,9 @@ export class Battle {
 			let ofpoke = this.getPokemon(kwArgs.of);
 			this.activateAbility(ofpoke || poke, fromeffect);
 			switch (effect.id) {
+			case 'fluctuant':
+				this.scene.resultAnim(poke, 'Already fluctuant', 'neutral');
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
 				break;
@@ -2029,6 +2032,10 @@ export class Battle {
 			}
 
 			switch (args[2]) {
+			case 'fluctuant':
+				this.scene.resultAnim(poke, 'Fluctuant', 'fluctuant');
+				this.scene.runStatusAnim('fluctuant' as ID, [poke]);
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
@@ -2082,6 +2089,9 @@ export class Battle {
 			if (poke) {
 				poke.status = '';
 				switch (args[2]) {
+				case 'fluctuant':
+					this.scene.resultAnim(poke, 'Fluctuant cured', 'good');
+					break;
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
 					break;
