@@ -1927,8 +1927,23 @@ export class Battle {
 			let ofpoke = this.getPokemon(kwArgs.of);
 			this.activateAbility(ofpoke || poke, fromeffect);
 			switch (effect.id) {
+			case 'prone':
+				this.scene.resultAnim(poke, 'Already prone', 'neutral');
+				break;
+			case 'banished':
+				this.scene.resultAnim(poke, 'Already banished', 'neutral');
+				break;
+			case 'blinded':
+				this.scene.resultAnim(poke, 'Already blinded', 'neutral');
+				break;
+			case 'pressurized':
+				this.scene.resultAnim(poke, 'Already pressurized', 'neutral');
+				break;
 			case 'fluctuant':
 				this.scene.resultAnim(poke, 'Already fluctuant', 'neutral');
+				break;
+			case 'wounded':
+				this.scene.resultAnim(poke, 'Already wounded', 'neutral');
 				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
@@ -2032,9 +2047,23 @@ export class Battle {
 			}
 
 			switch (args[2]) {
+			case 'prone':
+				this.scene.resultAnim(poke, 'Prone', 'prone');
+				break;
+			case 'banished':
+				this.scene.resultAnim(poke, 'Banished', 'banished');
+				break;
+			case 'blinded':
+				this.scene.resultAnim(poke, 'Blinded', 'blinded');
+				break;
+			case 'pressurized':
+				this.scene.resultAnim(poke, 'Pressurized', 'pressurized');
+				break;
 			case 'fluctuant':
 				this.scene.resultAnim(poke, 'Fluctuant', 'fluctuant');
-				this.scene.runStatusAnim('fluctuant' as ID, [poke]);
+				break;
+			case 'wounded':
+				this.scene.resultAnim(poke, 'Wounded', 'wounded');
 				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Burned', 'brn');
@@ -2089,8 +2118,23 @@ export class Battle {
 			if (poke) {
 				poke.status = '';
 				switch (args[2]) {
+				case 'prone':
+					this.scene.resultAnim(poke, 'Got up from prone', 'good');
+					break;
+				case 'banished':
+					this.scene.resultAnim(poke, 'Banishment lifted', 'good');
+					break;
+				case 'blinded':
+					this.scene.resultAnim(poke, 'Blindness cured', 'good');
+					break;
+				case 'pressurized':
+					this.scene.resultAnim(poke, 'Pressure normalized', 'good');
+					break;
 				case 'fluctuant':
-					this.scene.resultAnim(poke, 'Fluctuant cured', 'good');
+					this.scene.resultAnim(poke, 'Fluctuation subsided', 'good');
+					break;
+				case 'wounded':
+					this.scene.resultAnim(poke, 'Wounds closed', 'good');
 					break;
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
