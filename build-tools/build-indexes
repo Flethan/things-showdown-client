@@ -15,7 +15,7 @@ if (!fs.existsSync('data/things-showdown')) {
 }
 
 process.stdout.write("Syncing data from Git repository... ");
-child_process.execSync('git pull https://github.com/Flethan/things-showdown.git main-server', {cwd: 'data/things-showdown'});
+child_process.execSync('git pull https://github.com/Flethan/things-showdown.git', {cwd: 'data/things-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/things-showdown'});
 console.log("DONE");
 
