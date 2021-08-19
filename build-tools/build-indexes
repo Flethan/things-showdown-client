@@ -9,13 +9,13 @@ const rootDir = path.resolve(__dirname, '..');
 process.chdir(rootDir);
 
 if (!fs.existsSync('data/things-showdown')) {
-	child_process.execSync('git clone https://github.com/Flethan/things-showdown.git main', {
+	child_process.execSync('git clone https://github.com/Flethan/things-showdown.git main-server', {
 		cwd: 'data',
 	});
 }
 
 process.stdout.write("Syncing data from Git repository... ");
-child_process.execSync('git pull', {cwd: 'data/things-showdown'});
+child_process.execSync('git pull origin main-server', {cwd: 'data/things-showdown'});
 child_process.execSync('npm run build', {cwd: 'data/things-showdown'});
 console.log("DONE");
 
