@@ -40,6 +40,7 @@ interface BattleRequestActivePokemon {
 	/** also true if the pokemon can Gigantamax */
 	canDynamax?: boolean;
 	canGigantamax?: boolean;
+	canSymbolEvo?: boolean;
 	canMegaEvo?: boolean;
 	canUltraBurst?: boolean;
 	trapped?: boolean;
@@ -80,6 +81,7 @@ interface BattleMoveChoice {
 	/** 1-based move */
 	move: number;
 	targetLoc: number;
+	symbol: boolean;
 	mega: boolean;
 	ultra: boolean;
 	max: boolean;
@@ -111,12 +113,14 @@ class BattleChoiceBuilder {
 		/** if nonzero, show target screen; if zero, show move screen */
 		move: 0,
 		targetLoc: 0, // should always be 0: is not partial if `targetLoc` is known
+		symbol: false,
 		mega: false,
 		ultra: false,
 		z: false,
 		max: false,
 	};
 	alreadySwitchingIn: number[] = [];
+	alreadySymbol = false;
 	alreadyMega = false;
 	alreadyMax = false;
 	alreadyZ = false;
@@ -182,6 +186,7 @@ class BattleChoiceBuilder {
 				const choosableTargets = ['normal', 'any', 'adjacentAlly', 'adjacentAllyOrSelf', 'adjacentFoe'];
 				if (choosableTargets.includes(this.getChosenMove(choice, this.index()).target)) {
 					this.current.move = choice.move;
+					this.current.symbol = choice.symbol;
 					this.current.mega = choice.mega;
 					this.current.ultra = choice.ultra;
 					this.current.z = choice.z;
@@ -189,10 +194,12 @@ class BattleChoiceBuilder {
 					return null;
 				}
 			}
+			if (choice.symbol) this.alreadySymbol = true;
 			if (choice.mega) this.alreadyMega = true;
 			if (choice.z) this.alreadyZ = true;
 			if (choice.max) this.alreadyMax = true;
 			this.current.move = 0;
+			this.current.symbol = false;
 			this.current.mega = false;
 			this.current.ultra = false;
 			this.current.z = false;
@@ -277,6 +284,7 @@ class BattleChoiceBuilder {
 				choiceType: 'move',
 				move: 0,
 				targetLoc: 0,
+				symbol: false,
 				mega: false,
 				ultra: false,
 				z: false,
@@ -291,6 +299,9 @@ class BattleChoiceBuilder {
 					if (current.targetLoc) throw new Error(`Move choice has multiple targets`);
 					current.targetLoc = parseInt(choice.slice(-2), 10);
 					choice = choice.slice(0, -2).trim();
+				} else if (choice.endsWith(' symbol')) {
+					current.symbol = true;
+					choice = choice.slice(0, -7);
 				} else if (choice.endsWith(' mega')) {
 					current.mega = true;
 					choice = choice.slice(0, -5);
@@ -416,7 +427,7 @@ class BattleChoiceBuilder {
 		switch (choice.choiceType) {
 		case 'move':
 			const target = choice.targetLoc ? ` ${choice.targetLoc > 0 ? '+' : ''}${choice.targetLoc}` : ``;
-			const boost = `${choice.max ? ' max' : ''}${choice.mega ? ' mega' : ''}${choice.z ? ' zmove' : ''}`;
+			const boost = `${choice.max ? ' max' : ''}${choice.symbol ? ' symbol' : ''}${choice.mega ? ' mega' : ''}${choice.z ? ' zmove' : ''}`;
 			return `move ${choice.move}${boost}${target}`;
 		case 'switch':
 		case 'team':

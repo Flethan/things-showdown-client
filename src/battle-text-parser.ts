@@ -358,7 +358,7 @@ class BattleTextParser {
 		switch (cmd) {
 		case 'done' : case 'turn':
 			return 'break';
-		case 'move' : case 'cant': case 'switch': case 'drag': case 'upkeep': case 'start': case '-mega': case '-candynamax':
+		case 'move' : case 'cant': case 'switch': case 'drag': case 'upkeep': case 'start': case '-symbol': case '-mega': case '-candynamax':
 			return 'major';
 		case 'switchout': case 'faint':
 			return 'preMajor';
@@ -1061,6 +1061,12 @@ class BattleTextParser {
 
 		case '-notarget': {
 			return this.template('noTarget');
+		}
+
+		case '-symbol': {
+			const [, pokemon] = args;
+			const template = this.template('symbol');
+			return template.replace('[POKEMON]', this.pokemon(pokemon));
 		}
 
 		case '-mega': case '-primal': {

@@ -242,6 +242,9 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 		const choices = this.props.room.choices;
 		if (!choices) return; // shouldn't happen
 		switch (checkbox.name) {
+		case 'symbol':
+			choices.current.symbol = checkbox.checked;
+			break;
 		case 'mega':
 			choices.current.mega = checkbox.checked;
 			break;
@@ -488,6 +491,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			const active = request.requestType === 'move' ? request.active[i] : null;
 			if (choice.choiceType === 'move') {
 				buf.push(`${pokemon.name} will `);
+				if (choice.symbol) buf.push(`Symbol Evolve and `);
 				if (choice.mega) buf.push(`Mega Evolve and `);
 				if (choice.ultra) buf.push(`Ultra Burst and `);
 				if (choice.max && active?.canDynamax) buf.push(active?.canGigantamax ? `Gigantamax and ` : `Dynamax and `);
@@ -548,6 +552,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			const moveRequest = choices.currentMoveRequest()!;
 
 			const canDynamax = moveRequest.canDynamax && !choices.alreadyMax;
+			const canSymbolEvo = moveRequest.canSymbolEvo && !choices.alreadySymbol;
 			const canMegaEvo = moveRequest.canMegaEvo && !choices.alreadyMega;
 			const canZMove = moveRequest.zMoves && !choices.alreadyZ;
 
@@ -583,6 +588,10 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 						{canDynamax && <label class={`megaevo${choices.current.max ? ' cur' : ''}`}>
 							<input type="checkbox" name="max" checked={choices.current.max} onChange={this.toggleBoostedMove} /> {}
 							{moveRequest.canGigantamax ? 'Gigantamax' : 'Dynamax'}
+						</label>}
+						{canSymbolEvo && <label class={`symbolevo${choices.current.symbol ? ' cur' : ''}`}>
+							<input type="checkbox" name="symbol" checked={choices.current.symbol} onChange={this.toggleBoostedMove} /> {}
+							Symbol Evolution
 						</label>}
 						{canMegaEvo && <label class={`megaevo${choices.current.mega ? ' cur' : ''}`}>
 							<input type="checkbox" name="mega" checked={choices.current.mega} onChange={this.toggleBoostedMove} /> {}

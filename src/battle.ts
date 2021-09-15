@@ -1586,7 +1586,7 @@ export class Battle {
 			if (args[0] === '-damage' && kwArgs.from === 'Leech Seed' && nextArgs[0] === '-heal' && nextKwargs.silent) {
 				kwArgs.then = '.';
 			}
-			if (args[0] === 'detailschange' && nextArgs[0] === '-mega') {
+			if (args[0] === 'detailschange' && (nextArgs[0] === '-mega' || nextArgs[0] === '-symbol')) {
 				if (this.scene.closeMessagebar()) {
 					this.currentStep--;
 					return;
@@ -2444,7 +2444,7 @@ export class Battle {
 			this.log(args, kwArgs);
 			break;
 		}
-		case '-primal': case '-burst': {
+		case '-primal': case '-burst': case '-symbol': {
 			this.log(args, kwArgs);
 			break;
 		}

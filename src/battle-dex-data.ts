@@ -1382,6 +1382,7 @@ class Species implements Effect {
 	readonly requiredItem: string;
 	readonly tier: string;
 	readonly isTotem: boolean;
+	readonly isSymbol: boolean;
 	readonly isMega: boolean;
 	readonly canGigantamax: boolean;
 	readonly isPrimal: boolean;
@@ -1431,6 +1432,7 @@ class Species implements Effect {
 		this.tier = data.tier || '';
 
 		this.isTotem = false;
+		this.isSymbol = !!(this.forme && ['Infinity', 'Element', 'Null'].includes(this.forme));
 		this.isMega = !!(this.forme && ['-mega', '-megax', '-megay'].includes(this.formeid));
 		this.canGigantamax = !!data.canGigantamax;
 		this.isPrimal = !!(this.forme && this.formeid === '-primal');

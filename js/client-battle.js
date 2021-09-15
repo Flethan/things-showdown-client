@@ -530,6 +530,7 @@
 			var curActive = this.request && this.request.active && this.request.active[pos];
 			if (!curActive) return;
 			var trapped = curActive.trapped;
+			var canSymbolEvo = curActive.canSymbolEvo || switchables[pos].canSymbolEvo;
 			var canMegaEvo = curActive.canMegaEvo || switchables[pos].canMegaEvo;
 			var canZMove = curActive.canZMove || switchables[pos].canZMove;
 			var canUltraBurst = curActive.canUltraBurst || switchables[pos].canUltraBurst;
@@ -690,7 +691,9 @@
 					}
 					moveMenu += movebuttons;
 				}
-				if (canMegaEvo) {
+				if (canSymbolEvo) {
+					moveMenu += '<br /><label class="symbolevo"><input type="checkbox" name="symbolevo" />&nbsp;Symbol&nbsp;Evolution</label>';
+				} else if (canMegaEvo) {
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="megaevo" />&nbsp;Mega&nbsp;Evolution</label>';
 				} else if (canZMove) {
 					moveMenu += '<br /><label class="megaevo"><input type="checkbox" name="zmove" />&nbsp;Z-Power</label>';
@@ -921,6 +924,10 @@
 						buf += myPokemon[i].speciesForme + ' will ';
 						if (parts.length > 2) {
 							var targetPos = parts[2];
+							if (targetPos === 'symbol') {
+								buf += 'symbol evolve, then ';
+								targetPos = parts[3];
+							}
 							if (targetPos === 'mega') {
 								buf += 'mega evolve, then ';
 								targetPos = parts[3];
@@ -1165,6 +1172,7 @@
 
 			if (pos !== undefined) { // pos === undefined if called by chooseMoveTarget()
 				var nearActive = this.battle.nearSide.active;
+				var isSymbol = !!(this.$('input[name=symbolevo]')[0] || '').checked;
 				var isMega = !!(this.$('input[name=megaevo]')[0] || '').checked;
 				var isZMove = !!(this.$('input[name=zmove]')[0] || '').checked;
 				var isUltraBurst = !!(this.$('input[name=ultraburst]')[0] || '').checked;
@@ -1173,7 +1181,7 @@
 				var target = e.getAttribute('data-target');
 				var choosableTargets = {normal: 1, any: 1, adjacentAlly: 1, adjacentAllyOrSelf: 1, adjacentFoe: 1};
 
-				this.choice.choices.push('move ' + pos + (isMega ? ' mega' : '') + (isZMove ? ' zmove' : '') + (isUltraBurst ? ' ultra' : '') + (isDynamax ? ' dynamax' : ''));
+				this.choice.choices.push('move ' + pos + (isSymbol ? ' symbol' : '') + (isMega ? ' mega' : '') + (isZMove ? ' zmove' : '') + (isUltraBurst ? ' ultra' : '') + (isDynamax ? ' dynamax' : ''));
 				if (nearActive.length > 1 && target in choosableTargets) {
 					this.choice.type = 'movetarget';
 					this.choice.moveTarget = target;

@@ -2651,7 +2651,10 @@ export class PokemonSprite extends Sprite {
 		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 
 		let symbol = '';
-		if (pokemon.speciesForme.indexOf('-Mega') >= 0) symbol = 'mega';
+		if (pokemon.speciesForme === 'Infinity') symbol = 'infinity';
+		else if (pokemon.speciesForme === 'Element') symbol = 'element';
+		else if (pokemon.speciesForme === 'Null') symbol = 'null';
+		else if (pokemon.speciesForme.indexOf('-Mega') >= 0) symbol = 'mega';
 		else if (pokemon.speciesForme === 'Kyogre-Primal') symbol = 'alpha';
 		else if (pokemon.speciesForme === 'Groudon-Primal') symbol = 'omega';
 		if (symbol) {
