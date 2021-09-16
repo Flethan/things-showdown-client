@@ -2654,6 +2654,7 @@ export class PokemonSprite extends Sprite {
 		if (pokemon.speciesForme === 'Infinity') symbol = 'infinity';
 		else if (pokemon.speciesForme === 'Element') symbol = 'element';
 		else if (pokemon.speciesForme === 'Null') symbol = 'null';
+		else if (pokemon.speciesForme === 'Mu') symbol = 'mu';
 		else if (pokemon.speciesForme.indexOf('-Mega') >= 0) symbol = 'mega';
 		else if (pokemon.speciesForme === 'Kyogre-Primal') symbol = 'alpha';
 		else if (pokemon.speciesForme === 'Groudon-Primal') symbol = 'omega';
