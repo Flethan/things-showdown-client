@@ -976,7 +976,7 @@ type TypeName = 'Normal' | 'Fighting' | 'Flying' | 'Poison' | 'Ground' | 'Rock' 
 	'Fire' | 'Water' | 'Grass' | 'Electric' | 'Psychic' | 'Ice' | 'Dragon' | 'Dark' | 'Fairy' | '???' | 'Arthropod' |
 	'Dirt' | 'Far' | 'Fish' | 'Green' | 'H' | 'Hair' | 'Industrial' | 'Liquid' | 'Music' | 'Night' | 'No' | 'Science' | 'Sport' |
 	'Sword' | 'Temperature' | 'Time' | 'Weather' | 'Yellow' | 'Infinity';
-type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn' | 'prone' | 'banished' | 'blinded' | 'pressurized' | 'fluctuant' | 'wounded';
+type StatusName = 'par' | 'psn' | 'frz' | 'slp' | 'brn' | 'prone' | 'banished' | 'blinded' | 'pressurized' | 'fluctuant' | 'wounded' | 'distanced';
 type BoostStatName = 'atk' | 'def' | 'spa' | 'spd' | 'spe' | 'evasion' | 'accuracy' | 'spc';
 type GenderName = 'M' | 'F' | 'N';
 

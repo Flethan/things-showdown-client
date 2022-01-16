@@ -2092,6 +2092,11 @@ a.ilink.yours {
 	background: #cc4125;
 	color: #000000;
 }
+.status.distanced {
+	background: #5c4e4b;
+	color: #000000;
+}
+
 
 .movemenu button {
 	float: left;

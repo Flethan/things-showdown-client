@@ -255,7 +255,8 @@ License: GPLv2
 .statbar span.blinded,
 .statbar span.pressurized,
 .statbar span.fluctuant,
-.statbar span.wounded {
+.statbar span.wounded,
+.statbar span.distanced {
 	padding: 1px 2px;
 	border: 0;
 	border-radius: 3px;
@@ -302,6 +303,10 @@ License: GPLv2
 }
 .statbar span.wounded {
 	background: #cc4125;
+	color: #000000;
+}
+.statbar span.distanced {
+	background: #5c4e4b;
 	color: #000000;
 }
 .statbar span.bad {
@@ -562,6 +567,10 @@ License: GPLv2
 }
 .battle .woundedresult strong {
 	background: #cc4125;
+	color: #000000;
+}
+.battle .distancedresult strong {
+	background: #5c4e4b;
 	color: #000000;
 }
 .battle .abilityresult strong {

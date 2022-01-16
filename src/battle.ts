@@ -451,6 +451,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			delete this.volatiles['stockpile2'];
 			delete this.volatiles['stockpile3'];
 			delete this.volatiles['torment'];
+			delete this.volatiles['elementtype'];
 			delete this.volatiles['typeadd'];
 			delete this.volatiles['typechange'];
 			delete this.volatiles['yawn'];
@@ -464,16 +465,22 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		pokemon.statusStage = 0;
 	}
 	copyTypesFrom(pokemon: Pokemon) {
-		const [types, addedType] = pokemon.getTypes();
+		const [types, addedType, elementTypes] = pokemon.getTypes();
 		this.addVolatile('typechange' as ID, types.join('/'));
+		if (elementTypes.length) {
+			this.addVolatile('elementtypes' as ID, elementTypes.join('/'));
+		} else {
+			this.removeVolatile('elementtypes' as ID);
+		}
 		if (addedType) {
 			this.addVolatile('typeadd' as ID, addedType);
 		} else {
 			this.removeVolatile('typeadd' as ID);
 		}
 	}
-	getTypes(serverPokemon?: ServerPokemon): [ReadonlyArray<TypeName>, TypeName | ''] {
+	getTypes(serverPokemon?: ServerPokemon): [ReadonlyArray<TypeName>, TypeName | '', ReadonlyArray<TypeName>] {
 		let types: ReadonlyArray<TypeName>;
+		let elementTypes: ReadonlyArray<TypeName>;
 		if (this.volatiles.typechange) {
 			types = this.volatiles.typechange[1].split('/');
 		} else {
@@ -483,8 +490,9 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			types = types.filter(typeName => typeName !== 'Flying');
 			if (!types.length) types = ['Normal'];
 		}
+		elementTypes = (this.volatiles.elementtypes ? this.volatiles.elementtypes[1].split('/') : []); 
 		const addedType = (this.volatiles.typeadd ? this.volatiles.typeadd[1] : '');
-		return [types, addedType];
+		return [types, addedType, elementTypes];
 	}
 	isGrounded(serverPokemon?: ServerPokemon) {
 		const battle = this.side.battle;
@@ -1945,6 +1953,9 @@ export class Battle {
 			case 'wounded':
 				this.scene.resultAnim(poke, 'Already wounded', 'neutral');
 				break;
+			case 'distanced':
+				this.scene.resultAnim(poke, 'Already distanced', 'neutral');
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
 				break;
@@ -2065,6 +2076,9 @@ export class Battle {
 			case 'wounded':
 				this.scene.resultAnim(poke, 'Wounded', 'wounded');
 				break;
+			case 'distanced':
+				this.scene.resultAnim(poke, 'Distanced', 'distanced');
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
@@ -2135,6 +2149,9 @@ export class Battle {
 					break;
 				case 'wounded':
 					this.scene.resultAnim(poke, 'Wounds closed', 'good');
+					break;
+				case 'distanced':
+					this.scene.resultAnim(poke, 'Distance reduced', 'good');
 					break;
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
@@ -2366,7 +2383,6 @@ export class Battle {
 		case 'detailschange': {
 			let poke = this.getPokemon(args[1])!;
 			poke.removeVolatile('formechange' as ID);
-			poke.removeVolatile('typeadd' as ID);
 			poke.removeVolatile('typechange' as ID);
 
 			let newSpeciesForme = args[2];
@@ -2423,7 +2439,6 @@ export class Battle {
 			let species = Dex.species.get(args[2]);
 			let fromeffect = Dex.getEffect(kwArgs.from);
 			let isCustomAnim = false;
-			poke.removeVolatile('typeadd' as ID);
 			poke.removeVolatile('typechange' as ID);
 			if (this.gen >= 7) poke.removeVolatile('autotomize' as ID);
 
@@ -2462,13 +2477,18 @@ export class Battle {
 					poke.copyTypesFrom(ofpoke);
 				} else {
 					const types = Dex.sanitizeName(args[3] || '???');
-					poke.removeVolatile('typeadd' as ID);
 					poke.addVolatile('typechange' as ID, types);
 					if (!kwArgs.silent) {
 						this.scene.typeAnim(poke, types);
 					}
 				}
 				this.scene.updateStatbar(poke);
+				break;
+			case 'elementtypes':
+				const types = Dex.sanitizeName(args[3]);
+				poke.addVolatile('elementtypes' as ID, types);
+				if (kwArgs.silent) break;
+				this.scene.typeAnim(poke, types);
 				break;
 			case 'typeadd':
 				const type = Dex.sanitizeName(args[3]);
@@ -3138,7 +3158,7 @@ export class Battle {
 		// status parse
 		if (!status) {
 			output.status = '';
-		} else if (status === 'par' || status === 'brn' || status === 'slp' || status === 'frz' || status === 'tox' || status === 'prone' || status === 'banished' || status === 'blinded' || status === 'pressurized' || status === 'fluctuant' || status === 'wounded') {
+		} else if (status === 'par' || status === 'brn' || status === 'slp' || status === 'frz' || status === 'tox' || status === 'prone' || status === 'banished' || status === 'blinded' || status === 'pressurized' || status === 'fluctuant' || status === 'wounded' || status === 'distanced') {
 			output.status = status;
 		} else if (status === 'psn' && output.status !== 'tox') {
 			output.status = status;

@@ -1747,6 +1747,7 @@ export class PokemonSprite extends Sprite {
 		formechange: null,
 		typechange: null,
 		typeadd: null,
+		elementtypes: null,
 		dynamax: ['Dynamaxed', 'good'],
 		trapped: null, // linked volatiles are not implemented yet
 		throatchop: ['Throat Chop', 'bad'],
@@ -2746,9 +2747,17 @@ export class PokemonSprite extends Sprite {
 			status += '<span class="fluctuant">FLUCTUANT</span> ';
 		} else if (pokemon.status === 'wounded') {
 			status += '<span class="wounded">WOUNDED</span> ';
+		} else if (pokemon.status === 'distanced') {
+			status += '<span class="distanced">DISTANCED</span> ';
 		}
 		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
 			const types = pokemon.volatiles.typechange[1].split('/');
+			for (const type of types) {
+				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
+			}
+		}
+		if (pokemon.volatiles.elementtypes && pokemon.volatiles.elementtypes[1]) {
+			const types = pokemon.volatiles.elementtypes[1].split('/');
 			for (const type of types) {
 				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
 			}

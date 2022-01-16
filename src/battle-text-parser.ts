@@ -570,6 +570,10 @@ class BattleTextParser {
 				const template = this.template('typeChange', kwArgs.from);
 				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace('[TYPE]', arg3).replace('[SOURCE]', this.pokemon(kwArgs.of));
 			}
+			if (id === 'elementtypes') {
+				const template = this.template('typeAdd', kwArgs.from);
+				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace('[TYPE]', arg3);
+			}
 			if (id === 'typeadd') {
 				const template = this.template('typeAdd', kwArgs.from);
 				return line1 + template.replace('[POKEMON]', this.pokemon(pokemon)).replace('[TYPE]', arg3);
@@ -1023,7 +1027,7 @@ class BattleTextParser {
 			}
 
 			templateId = 'fail';
-			if (['brn', 'frz', 'par', 'psn', 'slp', 'prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'substitute'].includes(id)) {
+			if (['brn', 'frz', 'par', 'psn', 'slp', 'prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'substitute'].includes(id)) {
 				templateId = 'alreadyStarted';
 			}
 			if (kwArgs.heavy) templateId = 'failTooHeavy';
