@@ -495,6 +495,26 @@ class BattleTooltips {
 		Ground: "Tectonic Rage",
 		Fairy: "Twinkle Tackle",
 		"???": "",
+		Arthropod: "Diversity Deluge",
+		Dirt: "Soil Upheaval",
+		Far: "Deep Space Gamma Ray",
+		Fish: "Scaled Slap",
+		Green: "Green Green Upgrade",
+		H: "Horrific Hammer",
+		Hair: "Threaded Volley",
+		Industrial: "Innovation Cannon",
+		Liquid: "Dripping Smite",
+		Music: "Climactic Chorus",
+		Night: "Moonlit Assault",
+		No: "[Redacted]",
+		Science: "Analysis Attack",
+		Sport: "Buzzer Beater",
+		Sword: "1,000 Slash Onslaught",
+		Temperature: "Freezerburn Flame",
+		Time: "Zero Hour Ending",
+		Weather: "Emperor's Gambit",
+		Yellow: "Yellow Z-Zap",
+		Infinity: "Infinity Cycle",
 	};
 
 	static maxMoveTable: {[type in TypeName]: string} = {
@@ -517,6 +537,26 @@ class BattleTooltips {
 		Ground: "Max Quake",
 		Fairy: "Max Starfall",
 		"???": "",
+		Arthropod: "Max Bugs",
+		Dirt: "Max Powderfall",
+		Far: "Max Distance",
+		Fish: "Max Swimming",
+		Green: "Max Growth",
+		H: "Hmax",
+		Hair: "Max Tentacles",
+		Industrial: "Max Industry",
+		Liquid: "Max Flood",
+		Music: "Max Volume",
+		Night: "Max Fullmoon",
+		No: "Min",
+		Science: "Max Math",
+		Sport: "Max Goal",
+		Sword: "Max Slash",
+		Temperature: "Max Flux",
+		Time: "Max Relativity",
+		Weather: "Max Storm",
+		Yellow: "Max Yellow",
+		Infinity: "Absolute Max",
 	};
 
 	getMaxMoveFromType(type: TypeName, gmaxMove?: string | Move) {
@@ -1329,7 +1369,7 @@ class BattleTooltips {
 
 		let pokemonTypes = pokemon.getTypeList(serverPokemon);
 		value.reset();
-		if (move.id === 'revelationdance') {
+		if (move.id === 'revelationdance' || move.id === 'deposition' || move.id === 'emanation') {
 			moveType = pokemonTypes[0];
 		}
 		// Moves that require an item to change their type.
@@ -1386,7 +1426,7 @@ class BattleTooltips {
 
 		// Other abilities that change the move type.
 		const noTypeOverride = [
-			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball',
+			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball', 'deposition', 'emanation',
 		];
 		const allowTypeOverride = !noTypeOverride.includes(move.id);
 
@@ -1754,7 +1794,7 @@ class BattleTooltips {
 			}
 		}
 		const noTypeOverride = [
-			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball',
+			'judgment', 'multiattack', 'naturalgift', 'revelationdance', 'struggle', 'technoblast', 'terrainpulse', 'weatherball', 'deposition', 'emanation',
 		];
 		if (
 			move.category !== 'Status' && !noTypeOverride.includes(move.id) && !move.isZ && !move.isMax &&
