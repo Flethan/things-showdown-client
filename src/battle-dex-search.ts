@@ -1057,7 +1057,7 @@ class BattleAbilitySearch extends BattleTypedSearch<'ability'> {
 			abilitySet = [...goodAbilities, ...poorAbilities, ...badAbilities];
 			if (species.isSymbol) {
 				if (isAAA) {
-					abilitySet.unshift(['html', `Will be <strong>${species.abilities['0']}</strong> after Mega Evolving.`]);
+					abilitySet.unshift(['html', `Will be <strong>${species.abilities['0']}</strong> after Symbol Evolving.`]);
 				}
 				// species is unused after this, so no need to replace
 			}

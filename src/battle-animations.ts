@@ -2652,7 +2652,7 @@ export class PokemonSprite extends Sprite {
 		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 
 		let symbol = '';
-		if (pokemon.speciesForme === 'Infinity') symbol = 'infinity';
+		if (pokemon.speciesForme === 'Infinite') symbol = 'infinite';
 		else if (pokemon.speciesForme === 'Element') symbol = 'element';
 		else if (pokemon.speciesForme === 'Null') symbol = 'null';
 		else if (pokemon.speciesForme === 'Mu') symbol = 'mu';
@@ -2750,6 +2750,10 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'distanced') {
 			status += '<span class="distanced">DISTANCED</span> ';
 		}
+		if (pokemon.volatiles.typeadd) {
+			const type = pokemon.volatiles.typeadd[1];
+			status += '+<img src="' + Dex.resourcePrefix + 'sprites/types/' + type + '.png" alt="' + type + '" class="pixelated" /> ';
+		}
 		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
 			const types = pokemon.volatiles.typechange[1].split('/');
 			for (const type of types) {
@@ -2759,12 +2763,8 @@ export class PokemonSprite extends Sprite {
 		if (pokemon.volatiles.elementtypes && pokemon.volatiles.elementtypes[1]) {
 			const types = pokemon.volatiles.elementtypes[1].split('/');
 			for (const type of types) {
-				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
+				status += '∈<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
 			}
-		}
-		if (pokemon.volatiles.typeadd) {
-			const type = pokemon.volatiles.typeadd[1];
-			status += '+<img src="' + Dex.resourcePrefix + 'sprites/types/' + type + '.png" alt="' + type + '" class="pixelated" /> ';
 		}
 		for (const stat in pokemon.boosts) {
 			if (pokemon.boosts[stat]) {

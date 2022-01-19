@@ -2486,7 +2486,8 @@ export class Battle {
 				break;
 			case 'elementtypes':
 				const types = Dex.sanitizeName(args[3]);
-				poke.addVolatile('elementtypes' as ID, types);
+				if (types.length) poke.addVolatile('elementtypes' as ID, types);
+				else poke.removeVolatile('elementtypes' as ID);
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, types);
 				break;
