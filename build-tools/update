@@ -98,6 +98,8 @@ if (process.argv[2] === 'full') {
 	} catch (e) {}
 }
 
+delete compileOpts.ignore // Flethan's warcrime
+
 compiledFiles += compiler.compileToDir(`src`, `js`, compileOpts);
 
 compiledFiles += compiler.compileToDir(`src`, `js`, compileOpts);
