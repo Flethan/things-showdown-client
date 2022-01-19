@@ -1789,7 +1789,7 @@ export class PokemonSprite extends Sprite {
 		slowstart: ['Slow Start', 'bad'],
 		noretreat: ['No Retreat', 'bad'],
 		octolock: ['Octolock', 'bad'],
-		tarshot: ['Car Shot', 'good'],
+		tarshot: ['Door Shot', 'good'],
 		doomdesire: null,
 		futuresight: null,
 		mimic: ['Mimic', 'good'],
@@ -2652,10 +2652,10 @@ export class PokemonSprite extends Sprite {
 		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 
 		let symbol = '';
-		if (pokemon.speciesForme === 'Infinite') symbol = 'infinite';
-		else if (pokemon.speciesForme === 'Element') symbol = 'element';
-		else if (pokemon.speciesForme === 'Null') symbol = 'null';
-		else if (pokemon.speciesForme === 'Mu') symbol = 'mu';
+		if (pokemon.getSpecies().forme === 'Infinite') symbol = 'infinite';
+		else if (pokemon.getSpecies().forme === 'Element') symbol = 'element';
+		else if (pokemon.getSpecies().forme === 'Null') symbol = 'null';
+		else if (pokemon.getSpecies().forme === 'Mu') symbol = 'mu';
 		else if (pokemon.speciesForme.indexOf('-Mega') >= 0) symbol = 'mega';
 		else if (pokemon.speciesForme === 'Kyogre-Primal') symbol = 'alpha';
 		else if (pokemon.speciesForme === 'Groudon-Primal') symbol = 'omega';

@@ -2485,8 +2485,11 @@ export class Battle {
 				this.scene.updateStatbar(poke);
 				break;
 			case 'elementtypes':
-				const types = Dex.sanitizeName(args[3]);
-				if (types.length) poke.addVolatile('elementtypes' as ID, types);
+				let types = Dex.sanitizeName(args[3]);
+				if (types) {
+					if (poke.hasVolatile('elementtypes' as ID)) types = [types, poke.volatiles['elementtypes']].join('/');
+					poke.addVolatile('elementtypes' as ID, types);
+				} 
 				else poke.removeVolatile('elementtypes' as ID);
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, types);
