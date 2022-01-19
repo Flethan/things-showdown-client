@@ -2493,7 +2493,8 @@ export class Battle {
 				break;
 			case 'typeadd':
 				const type = Dex.sanitizeName(args[3]);
-				poke.addVolatile('typeadd' as ID, type);
+				if (type) poke.addVolatile('typeadd' as ID, type);
+				else poke.removeVolatile('typeadd' as ID);
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, type);
 				break;
