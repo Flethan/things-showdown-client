@@ -2497,7 +2497,8 @@ export class Battle {
 					if (poke.hasVolatile('elementtypes' as ID)) {
 						const oldTypes = poke.volatiles['elementtypes'][1];
 						const dupedTypes = [...types.split('/'), ...oldTypes.split('/')];
-						types = [...new Set(dupedTypes)].join('/');
+						const set = new Set(dupedTypes);
+						types = Array.from(set).join('/');
 					}
 					poke.addVolatile('elementtypes' as ID, types);
 				} 
