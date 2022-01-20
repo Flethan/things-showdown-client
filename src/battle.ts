@@ -490,7 +490,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			types = types.filter(typeName => typeName !== 'Flying');
 			if (!types.length) types = ['Normal'];
 		}
-		elementTypes = (this.volatiles.elementtypes ? this.volatiles.elementtypes[1].split('/') : []); 
+		elementTypes = ((this.volatiles.elementtypes && this.volatiles.elementtypes[1]) ? this.volatiles.elementtypes[1].split('/') : []); 
 		const addedType = (this.volatiles.typeadd ? this.volatiles.typeadd[1] : '');
 		return [types, addedType, elementTypes];
 	}
@@ -2467,7 +2467,6 @@ export class Battle {
 			let poke = this.getPokemon(args[1])!;
 			let name = Dex.sanitizeName(args[2]);
 			poke.name = name;
-			this.scene.resetStatbar(poke);
 			this.log(args, kwArgs);
 			break;
 		}
