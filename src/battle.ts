@@ -2463,6 +2463,13 @@ export class Battle {
 			this.log(args, kwArgs);
 			break;
 		}
+		case '-name': {
+			let poke = this.getPokemon(args[1])!;
+			let name = Dex.sanitizeName(args[2]);
+			poke.name = name;
+			this.log(args, kwArgs);
+			break;
+		}
 		case '-start': {
 			let poke = this.getPokemon(args[1])!;
 			let effect = Dex.getEffect(args[2]);
@@ -2487,7 +2494,11 @@ export class Battle {
 			case 'elementtypes':
 				let types = Dex.sanitizeName(args[3]);
 				if (types) {
-					if (poke.hasVolatile('elementtypes' as ID)) types = [types, poke.volatiles['elementtypes'][1]].join('/');
+					if (poke.hasVolatile('elementtypes' as ID)) {
+						const oldTypes = poke.volatiles['elementtypes'][1];
+						const dupedTypes = [...types.split('/'), ...oldTypes.split('/')];
+						types = [...new Set(dupedTypes)].join('/');
+					}
 					poke.addVolatile('elementtypes' as ID, types);
 				} 
 				else poke.removeVolatile('elementtypes' as ID);
