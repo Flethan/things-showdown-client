@@ -2487,7 +2487,7 @@ export class Battle {
 			case 'elementtypes':
 				let types = Dex.sanitizeName(args[3]);
 				if (types) {
-					if (poke.hasVolatile('elementtypes' as ID)) types = [types, poke.volatiles['elementtypes']].join('/');
+					if (poke.hasVolatile('elementtypes' as ID)) types = [types, poke.volatiles['elementtypes'][1]].join('/');
 					poke.addVolatile('elementtypes' as ID, types);
 				} 
 				else poke.removeVolatile('elementtypes' as ID);
