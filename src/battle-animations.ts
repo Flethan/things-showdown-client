@@ -2753,13 +2753,14 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'distanced') {
 			status += '<span class="distanced">DISTANCED</span> ';
 		}
-		if (pokemon.volatiles.typeadd) {
+		if (pokemon.volatiles.typeadd && pokemon.volatiles.typeadd[1]) {
 			const type = pokemon.volatiles.typeadd[1];
 			status += '+<img src="' + Dex.resourcePrefix + 'sprites/types/' + type + '.png" alt="' + type + '" class="pixelated" /> ';
 		}
 		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
 			const types = pokemon.volatiles.typechange[1].split('/');
-			for (const type of types) {
+			for (let type of types) {
+				if (type === "???") type = "Unknown";
 				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
 			}
 		}
