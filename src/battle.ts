@@ -2467,7 +2467,7 @@ export class Battle {
 			let poke = this.getPokemon(args[1])!;
 			let name = Dex.sanitizeName(args[2]);
 			poke.name = name;
-			this.scene.updateStatbar(poke);
+			this.scene.resetStatbar(poke);
 			this.log(args, kwArgs);
 			break;
 		}
