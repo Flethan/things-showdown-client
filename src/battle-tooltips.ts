@@ -637,6 +637,9 @@ class BattleTooltips {
 					basePower,
 				});
 			}
+		} else if (isZOrMax === 'mumove') {
+			move = Dex.moves.get(pokemon.getSpecies().muMove);
+			//move = Dex.moves.get(Dex.species.get(pokemon.getSpecies().evos?.[0]).muMove);
 		}
 
 		text += '<h2>' + move.name + '<br />';

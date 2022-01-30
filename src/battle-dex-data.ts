@@ -138,7 +138,8 @@ const BattleStatNames = {
 } as const;
 
 const BattleBaseSpeciesChart = [
-	"unown", "burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie", "pokestarufo", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestartransport", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit", "pokestarblackdoor", "pokestarwhitedoor", "pokestarblackbelt", "connector", "connectphore",
+	"unown", "burmy", "shellos", "gastrodon", "deerling", "sawsbuck", "vivillon", "flabebe", "floette", "florges", "furfrou", "minior", "alcremie", "pokestarufo", "pokestarbrycenman", "pokestarmt", "pokestarmt2", "pokestartransport", "pokestargiant", "pokestarhumanoid", "pokestarmonster", "pokestarf00", "pokestarf002", "pokestarspirit", "pokestarblackdoor", "pokestarwhitedoor", "pokestarblackbelt", 
+	"connector", "connectphore", "omnectivore",
 ] as ID[];
 
 const BattlePokemonIconIndexes: {[id: string]: number} = {
@@ -1391,6 +1392,8 @@ class Species implements Effect {
 	readonly unreleasedHidden: boolean | 'Past';
 	readonly changesFrom: string | undefined;
 
+	readonly muMove: string | undefined;
+
 	constructor(id: ID, name: string, data: any) {
 		if (!data || typeof data !== 'object') data = {};
 		if (data.name) name = data.name;
@@ -1430,6 +1433,8 @@ class Species implements Effect {
 		this.evoCondition = data.evoCondition || '';
 		this.requiredItem = data.requiredItem || '';
 		this.tier = data.tier || '';
+
+		this.muMove = data.evos?.[0].muMove || undefined;
 
 		this.isTotem = false;
 		this.isSymbol = !!(this.forme && ['Infinite', 'Element', 'Null', 'Mu'].includes(this.forme));
