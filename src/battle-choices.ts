@@ -37,6 +37,14 @@ interface BattleRequestActivePokemon {
 		id: ID,
 		target: MoveTarget,
 	} | null)[];
+	muMove?: {
+		name: string,
+		id: ID,
+		pp: number,
+		maxpp: number,
+		target: MoveTarget,
+		disabled?: boolean,
+	};
 	/** also true if the pokemon can Gigantamax */
 	canDynamax?: boolean;
 	canGigantamax?: boolean;
@@ -260,6 +268,7 @@ class BattleChoiceBuilder {
 		if (choice.max || (activePokemon.maxMoves && !activePokemon.canDynamax)) {
 			return activePokemon.maxMoves![moveIndex];
 		}
+		if (choice.symbol && activePokemon.muMove && moveIndex === 0) return activePokemon.muMove;
 		return activePokemon.moves[moveIndex];
 	}
 
