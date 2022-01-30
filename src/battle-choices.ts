@@ -40,8 +40,6 @@ interface BattleRequestActivePokemon {
 	muMove?: {
 		name: string,
 		id: ID,
-		pp: number,
-		maxpp: number,
 		target: MoveTarget,
 		disabled?: boolean,
 	};
@@ -363,6 +361,12 @@ class BattleChoiceBuilder {
 							current.max = true;
 							break;
 						}
+					}
+				}
+				if (!current.move && moveRequest.muMove) {
+					if (moveid === moveRequest.muMove.id) {
+						current.move = 1;
+						current.symbol = true;
 					}
 				}
 			}

@@ -2502,14 +2502,20 @@ export class Battle {
 					}
 					poke.addVolatile('elementtypes' as ID, types);
 				} 
-				else poke.removeVolatile('elementtypes' as ID);
+				else {
+					poke.removeVolatile('elementtypes' as ID);
+					break;
+				}
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, types);
 				break;
 			case 'typeadd':
 				const type = Dex.sanitizeName(args[3]);
 				if (type) poke.addVolatile('typeadd' as ID, type);
-				else poke.removeVolatile('typeadd' as ID);
+				else {
+					poke.removeVolatile('typeadd' as ID);
+					break;
+				}
 				if (kwArgs.silent) break;
 				this.scene.typeAnim(poke, type);
 				break;
