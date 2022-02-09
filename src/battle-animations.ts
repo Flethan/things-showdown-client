@@ -5805,6 +5805,15 @@ export const BattleStatusAnims: AnimTable = {
 			}, 'linear', 'fade');
 		},
 	},
+	banished: {
+		anim(scene, [attacker]) {
+			attacker.anim({
+				opacity: 0.2,
+				y: attacker.y + 20,
+				time: 300,
+			}, 'linear');
+		},
+	},
 	brn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('fireball', {
