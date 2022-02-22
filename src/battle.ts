@@ -2064,6 +2064,7 @@ export class Battle {
 				break;
 			case 'banished':
 				this.scene.resultAnim(poke, 'Banished', 'banished');
+				this.scene.runStatusAnim('banished' as ID, [poke]);
 				break;
 			case 'blinded':
 				this.scene.resultAnim(poke, 'Blinded', 'blinded');
@@ -2073,6 +2074,7 @@ export class Battle {
 				break;
 			case 'fluctuant':
 				this.scene.resultAnim(poke, 'Fluctuant', 'fluctuant');
+				this.scene.runStatusAnim('fluctant' as ID, [poke]);
 				break;
 			case 'wounded':
 				this.scene.resultAnim(poke, 'Wounded', 'wounded');

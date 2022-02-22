@@ -32120,6 +32120,8 @@ export const BattleMoveAnims: AnimTable = {
 
 // THINGS
 BattleMoveAnims['study'] = {anim: BattleMoveAnims['mudbomb'].anim};
+BattleMoveAnims['soaringaxekick'] = {anim: BattleMoveAnims['bounce'].anim};
+BattleMoveAnims['ascend'] = {anim: BattleMoveAnims['fly'].anim};
 
 // placeholder animations
 BattleMoveAnims['torment'] = {anim: BattleMoveAnims['swagger'].anim};
