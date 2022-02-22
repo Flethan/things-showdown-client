@@ -84,6 +84,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 
 	hpcolor: HPColor = 'g';
 	moves: string[] = [];
+	muPP = 3;
 	ability = '';
 	baseAbility = '';
 	item = '';

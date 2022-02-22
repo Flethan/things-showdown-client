@@ -1434,7 +1434,7 @@ class Species implements Effect {
 		this.requiredItem = data.requiredItem || '';
 		this.tier = data.tier || '';
 
-		this.muMove = data.evos?.[0].muMove || undefined;
+		this.muMove = data.muMove;
 
 		this.isTotem = false;
 		this.isSymbol = !!(this.forme && ['Infinite', 'Element', 'Null', 'Mu'].includes(this.forme));

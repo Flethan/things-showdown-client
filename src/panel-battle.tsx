@@ -383,10 +383,7 @@ class BattlePanel extends PSRoomPanel<BattleRoom> {
 			const move = dex.moves.get(moveData.name);
 
 			if (active.muMove && i === 0) {
-				const muMoveData = active.muMove!;
-				if (!muMoveData) {
-					return <button disabled>&nbsp;</button>;
-				}
+				const muMoveData = active.muMove;
 				const tooltip = `mumove|${muMoveData.name}|${pokemonIndex}`;
 				return <MoveButton cmd={`/move ${i + 1} mumove`} type={move.type} tooltip={tooltip} moveData={{pp: 3, maxpp: 3}}>
 					{muMoveData.name}
