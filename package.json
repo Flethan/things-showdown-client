@@ -25,7 +25,8 @@
     "express": "^4.17.1",
     "google-auth-library": "^3.1.0",
     "image-size": "^0.7.2",
-    "output-file-sync": "^2.0.1"
+    "output-file-sync": "^2.0.1",
+    "source-map": "^0.5.7"
   },
   "devDependencies": {
     "@types/jquery": "^3.5.6",
