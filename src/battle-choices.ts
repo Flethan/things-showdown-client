@@ -266,7 +266,7 @@ class BattleChoiceBuilder {
 		if (choice.max || (activePokemon.maxMoves && !activePokemon.canDynamax)) {
 			return activePokemon.maxMoves![moveIndex];
 		}
-		if (choice.symbol && activePokemon.muMove && moveIndex === 0) return activePokemon.muMove;
+		//if (choice.symbol && activePokemon.muMove && moveIndex === 0) return activePokemon.muMove;
 		return activePokemon.moves[moveIndex];
 	}
 
@@ -363,12 +363,12 @@ class BattleChoiceBuilder {
 						}
 					}
 				}
-				if (!current.move && moveRequest.muMove) {
+				/*if (!current.move && moveRequest.muMove) {
 					if (moveid === moveRequest.muMove.id) {
 						current.move = 1;
 						current.symbol = true;
 					}
-				}
+				}*/
 			}
 			if (current.max && !moveRequest.canDynamax) current.max = false;
 			return current;

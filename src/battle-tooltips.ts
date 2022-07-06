@@ -637,9 +637,9 @@ class BattleTooltips {
 					basePower,
 				});
 			}
-		} else if (isZOrMax === 'mumove') {
+		} /*else if (isZOrMax === 'mumove') {
 			move = Dex.moves.get(gmaxMove);
-		}
+		}*/
 
 		text += '<h2>' + move.name + '<br />';
 
