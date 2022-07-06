@@ -36,7 +36,7 @@ export class BattleSceneStub {
 	resetBgm(): void { }
 	updateBgm(): void { }
 	resultAnim(
-		pokemon: Pokemon, result: string, type: "bad" | "good" | "neutral" | "par" | "psn" | "frz" | "slp" | "brn"  | "prone" | "banished" | "blinded" | "pressurized" | "fluctuant" | "wounded" | "distanced"
+		pokemon: Pokemon, result: string, type: "bad" | "good" | "neutral" | "par" | "psn" | "frz" | "slp" | "brn"  | "prone" | "banished" | "blinded" | "pressurized" | "fluctuant" | "wounded" | "distanced" | "infected"
 	): void { }
 	typeAnim(pokemon: Pokemon, types: string): void { }
 	resume(): void { }

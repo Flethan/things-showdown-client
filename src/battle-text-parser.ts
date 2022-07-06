@@ -1027,7 +1027,7 @@ class BattleTextParser {
 			}
 
 			templateId = 'fail';
-			if (['brn', 'frz', 'par', 'psn', 'slp', 'prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'substitute'].includes(id)) {
+			if (['brn', 'frz', 'par', 'psn', 'slp', 'prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'infected', 'substitute'].includes(id)) {
 				templateId = 'alreadyStarted';
 			}
 			if (kwArgs.heavy) templateId = 'failTooHeavy';

@@ -1707,6 +1707,10 @@ a.ilink.yours {
 	background: #5c4e4b;
 	color: #000000;
 }
+.status.infected {
+	background: #ff00ff;
+	color: #000000;
+}
 
 .movemenu button {
 	float: left;

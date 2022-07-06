@@ -1957,6 +1957,9 @@ export class Battle {
 			case 'distanced':
 				this.scene.resultAnim(poke, 'Already distanced', 'neutral');
 				break;
+			case 'infected':
+				this.scene.resultAnim(poke, 'Already infected', 'neutral');
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
 				break;
@@ -2082,6 +2085,9 @@ export class Battle {
 			case 'distanced':
 				this.scene.resultAnim(poke, 'Distanced', 'distanced');
 				break;
+			case 'infected':
+				this.scene.resultAnim(poke, 'Infected', 'infected');
+				break;
 			case 'brn':
 				this.scene.resultAnim(poke, 'Burned', 'brn');
 				this.scene.runStatusAnim('brn' as ID, [poke]);
@@ -2155,6 +2161,9 @@ export class Battle {
 					break;
 				case 'distanced':
 					this.scene.resultAnim(poke, 'Distance reduced', 'good');
+					break;
+				case 'infected':
+					this.scene.resultAnim(poke, 'Infection cured', 'good');
 					break;
 				case 'brn':
 					this.scene.resultAnim(poke, 'Burn cured', 'good');
@@ -3184,7 +3193,7 @@ export class Battle {
 		// status parse
 		if (!status) {
 			output.status = '';
-		} else if (status === 'par' || status === 'brn' || status === 'slp' || status === 'frz' || status === 'tox' || status === 'prone' || status === 'banished' || status === 'blinded' || status === 'pressurized' || status === 'fluctuant' || status === 'wounded' || status === 'distanced') {
+		} else if (status === 'par' || status === 'brn' || status === 'slp' || status === 'frz' || status === 'tox' || status === 'prone' || status === 'banished' || status === 'blinded' || status === 'pressurized' || status === 'fluctuant' || status === 'wounded' || status === 'distanced' || status === 'infected') {
 			output.status = status;
 		} else if (status === 'psn' && output.status !== 'tox') {
 			output.status = status;

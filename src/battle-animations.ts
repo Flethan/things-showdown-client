@@ -2752,6 +2752,8 @@ export class PokemonSprite extends Sprite {
 			status += '<span class="wounded">WOUNDED</span> ';
 		} else if (pokemon.status === 'distanced') {
 			status += '<span class="distanced">DISTANCED</span> ';
+		} else if (pokemon.status === 'infected') {
+			status += '<span class="infected">INFECTED</span> ';
 		}
 		if (pokemon.volatiles.typeadd && pokemon.volatiles.typeadd[1]) {
 			const type = pokemon.volatiles.typeadd[1];
