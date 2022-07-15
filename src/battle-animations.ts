@@ -2896,7 +2896,7 @@ interface AnimData {
 }
 export type AnimTable = {[k: string]: AnimData};
 
-const BattleEffects: {[k: string]: SpriteData} = {\
+const BattleEffects: {[k: string]: SpriteData} = {
 	//things
 	dust: {
 		url: 'dust.png',
