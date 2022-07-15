@@ -462,6 +462,27 @@ License: GPLv2
 .weather em small {
 	font-style: normal;
 }
+/* things */
+.locustswarmweather,
+.meteorshowerweather,
+.underwaterweather,
+.nighttimeweather,
+.hotweather,
+.coldweather,
+.timedilationweather,
+.yellowishweather,
+.richsoilweather,
+.spatialexpansionweather,
+.greengroundweather,
+.sudscapeweather,
+.mysticalsongweather,
+.nulllandweather,
+.springfloorweather,
+.windyweather {
+	background: #AAAAAA url(../fx/weather-windy.png) no-repeat scroll left top;
+	color: #666666;
+}
+/* regular */
 .sunweather,
 .sunnydayweather,
 .desolatelandweather {

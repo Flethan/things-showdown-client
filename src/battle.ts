@@ -1520,6 +1520,12 @@ export class Battle {
 		this.activateAbility(pokemon, effect);
 		if (move.id) pokemon.rememberMove(move.name, 0);
 		switch (effect.id) {
+		case 'banished':
+			this.scene.resultAnim(pokemon, 'Banished', 'banished');
+			break;
+		case 'distanced':
+			this.scene.resultAnim(pokemon, 'Distanced', 'distanced');
+			break;
 		case 'par':
 			this.scene.resultAnim(pokemon, 'Paralyzed', 'par');
 			break;

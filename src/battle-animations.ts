@@ -925,6 +925,15 @@ export class BattleScene implements BattleSceneStub {
 				sandstorm: 'Sandstorm',
 				hail: 'Hail',
 				deltastream: 'Strong Winds',
+				locustswarm: 'Locust Swarm',
+				meteorshower: 'Meteor Shower',
+				underwater: 'Underwater',
+				nighttime: 'Nighttime',
+				hot: 'Hot',
+				cold: 'Cold',
+				timedilation: 'Time Dilation',
+				windy: 'Windy',
+				yellowish: 'Yellowish',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.weather] || this.battle.weather}`;
 			if (this.battle.weatherMinTimeLeft !== 0) {
@@ -1342,6 +1351,42 @@ export class BattleScene implements BattleSceneStub {
 			}, this);
 			this.$spritesFront[spriteIndex].append(web.$el!);
 			this.sideConditions[siden][id] = [web];
+			break;
+		case 'dustcloud':
+			const dust = new Sprite(BattleEffects.dust, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(dust.$el!);
+			this.sideConditions[siden][id] = [dust];
+			break;
+		case 'wetfloor':
+			const puddle = new Sprite(BattleEffects.puddle, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(puddle.$el!);
+			this.sideConditions[siden][id] = [puddle];
+			break;
+		case 'voidtrap':
+				const voidt = new Sprite(BattleEffects.void, {
+					display: 'block',
+					x: side.x + 15,
+					y: side.y - 35,
+					z: side.z,
+					opacity: 0.4,
+					scale: 0.7,
+				}, this);
+				this.$spritesFront[spriteIndex].append(voidt.$el!);
+				this.sideConditions[siden][id] = [voidt];
 			break;
 		}
 	}
@@ -2851,7 +2896,21 @@ interface AnimData {
 }
 export type AnimTable = {[k: string]: AnimData};
 
-const BattleEffects: {[k: string]: SpriteData} = {
+const BattleEffects: {[k: string]: SpriteData} = {\
+	//things
+	dust: {
+		url: 'dust.png',
+		w: 120, h: 122,
+	},
+	puddle: {
+		url: 'puddle.png',
+		w: 120, h: 122,
+	},
+	void: {
+		url: 'void.png',
+		w: 120, h: 122,
+	},
+	//regular
 	wisp: {
 		url: 'wisp.png',
 		w: 100, h: 100,
