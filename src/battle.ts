@@ -2080,7 +2080,7 @@ export class Battle {
 				break;
 			case 'fluctuant':
 				this.scene.resultAnim(poke, 'Fluctuant', 'fluctuant');
-				this.scene.runStatusAnim('fluctant' as ID, [poke]);
+				this.scene.runStatusAnim('fluctuant' as ID, [poke]);
 				break;
 			case 'wounded':
 				this.scene.resultAnim(poke, 'Wounded', 'wounded');
