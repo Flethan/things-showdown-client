@@ -2087,7 +2087,7 @@ export class Battle {
 				break;
 			case 'distanced':
 				this.scene.resultAnim(poke, 'Distanced', 'distanced');
-				this.scene.runStatusAnim('brn' as ID, [poke]);
+				this.scene.runStatusAnim('distanced' as ID, [poke]);
 				break;
 			case 'infected':
 				this.scene.resultAnim(poke, 'Infected', 'infected');
