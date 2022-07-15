@@ -5820,7 +5820,8 @@ export const BattleStatusAnims: AnimTable = {
 		anim(scene, [attacker]) {
 			attacker.anim({
 				scale: 0.5,
-				y: attacker.y + 20,
+				x: attacker.x - 20,
+				y: attacker.y - 20,
 				time: 300,
 			}, 'linear');
 		},
