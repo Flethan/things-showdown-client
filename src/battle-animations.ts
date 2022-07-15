@@ -5816,6 +5816,15 @@ export const BattleStatusAnims: AnimTable = {
 			}, 'linear');
 		},
 	},
+	distanced: {
+		anim(scene, [attacker]) {
+			attacker.anim({
+				scale: 0.5,
+				y: attacker.y + 20,
+				time: 300,
+			}, 'linear');
+		},
+	},
 	brn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('fireball', {

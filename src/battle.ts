@@ -1625,6 +1625,9 @@ export class Battle {
 					}
 				}
 				switch (effect.id) {
+				case 'banished':
+					this.scene.runStatusAnim('banished' as ID, [poke]);
+					break;
 				case 'brn':
 					this.scene.runStatusAnim('brn' as ID, [poke]);
 					break;
@@ -2084,6 +2087,7 @@ export class Battle {
 				break;
 			case 'distanced':
 				this.scene.resultAnim(poke, 'Distanced', 'distanced');
+				this.scene.runStatusAnim('brn' as ID, [poke]);
 				break;
 			case 'infected':
 				this.scene.resultAnim(poke, 'Infected', 'infected');
