@@ -526,6 +526,7 @@
 			if (type === 'movetarget') pos--;
 
 			var hpRatio = switchables[pos].hp / switchables[pos].maxhp;
+			var staminaRatio = switchables[pos].stamina / 10;
 
 			var curActive = this.request && this.request.active && this.request.active[pos];
 			if (!curActive) return;
@@ -624,7 +625,8 @@
 			} else {
 				// Move chooser
 				var hpBar = '<small class="' + (hpRatio < 0.2 ? 'critical' : hpRatio < 0.5 ? 'weak' : 'healthy') + '">HP ' + switchables[pos].hp + '/' + switchables[pos].maxhp + '</small>';
-				requestTitle += ' What will <strong>' + BattleLog.escapeHTML(switchables[pos].name) + '</strong> do? ' + hpBar;
+				var staminaBar = '<small class="' + (staminaRatio < 0.2 ? 'critical' : staminaRatio < 0.5 ? 'weak' : 'healthy') + '">STAMINA ' + switchables[pos].stamina + '/' + 10 + '</small>';
+				requestTitle += ' What will <strong>' + BattleLog.escapeHTML(switchables[pos].name) + '</strong> do? ' + hpBar + ' ' + staminaBar;
 
 				var hasMoves = false;
 				var moveMenu = '';
@@ -637,7 +639,10 @@
 					var move = this.battle.dex.moves.get(moveData.move);
 					var name = move.name;
 					var pp = moveData.pp + '/' + moveData.maxpp;
+					// added stamina?
+					var stamina = moveData.stamina;
 					if (!moveData.maxpp) pp = '&ndash;';
+					if (!moveData.stamina) stamina = 10;
 					if (move.id === 'Struggle' || move.id === 'Recharge') pp = '&ndash;';
 					if (move.id === 'Recharge') move.type = '&ndash;';
 					if (name.substr(0, 12) === 'Hidden Power') name = 'Hidden Power';
@@ -649,7 +654,7 @@
 						movebuttons += '<button class="type-' + moveType + ' has-tooltip" name="chooseMove" value="' + (i + 1) + '" data-move="' + BattleLog.escapeHTML(moveData.move) + '" data-target="' + BattleLog.escapeHTML(moveData.target) + '" data-tooltip="' + BattleLog.escapeHTML(tooltipArgs) + '">';
 						hasMoves = true;
 					}
-					movebuttons += name + '<br /><small class="type">' + (moveType ? Dex.types.get(moveType).name : "Unknown") + '</small> <small class="pp">' + pp + '</small>&nbsp;</button> ';
+					movebuttons += name + '<br /><small class="type">' + (moveType ? Dex.types.get(moveType).name : "Unknown") + '</small> <small class="pp">' + stamina + '</small>&nbsp;</button> ';
 				}
 				if (!hasMoves) {
 					moveMenu += '<button class="movebutton" name="chooseMove" value="0" data-move="Struggle" data-target="randomNormal">Struggle<br /><small class="type">Normal</small> <small class="pp">&ndash;</small>&nbsp;</button> ';

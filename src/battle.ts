@@ -91,6 +91,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 	itemEffect = '';
 	prevItem = '';
 	prevItemEffect = '';
+	stamina = 10;
 
 	boosts: {[stat: string]: number} = {};
 	status: StatusName | 'tox' | '' | '???' = '';
@@ -592,6 +593,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		let range = Pokemon.getPixelRange(pokemon.hp, pokemon.hpcolor);
 		return Pokemon.getFormattedRange(range, precision, '–');
 	}
+	// TODO add stamina bar here?
 	destroy() {
 		if (this.sprite) this.sprite.destroy();
 		this.sprite = null!;
@@ -964,6 +966,8 @@ export interface PokemonHealth {
 	hpcolor: HPColor | '';
 	status: StatusName | 'tox' | '' | '???';
 	fainted?: boolean;
+	// stamina??
+	stamina?: number;
 }
 export interface ServerPokemon extends PokemonDetails, PokemonHealth {
 	ident: string;

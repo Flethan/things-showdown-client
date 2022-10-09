@@ -25,6 +25,7 @@ interface BattleRequestActivePokemon {
 		maxpp: number,
 		target: MoveTarget,
 		disabled?: boolean,
+		stamina?: number;
 	}[];
 	maxMoves?: {
 		name: string,
