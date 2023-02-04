@@ -934,6 +934,7 @@ export class BattleScene implements BattleSceneStub {
 				timedilation: 'Time Dilation',
 				windy: 'Windy',
 				yellowish: 'Yellowish',
+				friendlyatmosphere: 'Friendly Atmosphere',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.weather] || this.battle.weather}`;
 			if (this.battle.weatherMinTimeLeft !== 0) {
@@ -981,6 +982,14 @@ export class BattleScene implements BattleSceneStub {
 			case 'grassyterrain':
 			case 'mistyterrain':
 			case 'psychicterrain':
+			case 'richsoil':
+			case 'spatialexpansion':
+			case 'greenground':
+			case 'sudscape':
+			case 'mysticalsong':
+			case 'nullland':
+			case 'springfloor':
+			case 'invitingsurroundings':
 				terrain = pwid;
 				break;
 			default:
