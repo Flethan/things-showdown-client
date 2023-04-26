@@ -1366,7 +1366,7 @@ export class BattleScene implements BattleSceneStub {
 			const dust = new Sprite(BattleEffects.dust, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 35,
+				y: side.y - 55,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
@@ -1413,7 +1413,7 @@ export class BattleScene implements BattleSceneStub {
 		case 'autoturret':
 			const tur = new Sprite(BattleEffects.turret, {
 				display: 'block',
-				x: side.x + 15,
+				x: side.x + 85,
 				y: side.y - 35,
 				z: side.z,
 				opacity: 0.4,
@@ -1462,7 +1462,7 @@ export class BattleScene implements BattleSceneStub {
 			const stormc = new Sprite(BattleEffects.stormcell, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 35,
+				y: side.y - 55,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
@@ -1474,7 +1474,7 @@ export class BattleScene implements BattleSceneStub {
 			const lstorm = new Sprite(BattleEffects.lightningstorm, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 35,
+				y: side.y - 95,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
@@ -1482,7 +1482,7 @@ export class BattleScene implements BattleSceneStub {
 			this.$spritesFront[spriteIndex].append(lstorm.$el!);
 			this.sideConditions[siden][id] = [lstorm];
 			break;
-		case 'beamfield':
+		case 'beamscatter':
 			const beams = new Sprite(BattleEffects.beams, {
 				display: 'block',
 				x: side.x + 15,
