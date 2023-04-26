@@ -1076,6 +1076,12 @@ class Item implements Effect {
 }
 
 interface MoveFlags {
+	// THINGS
+	soda?: 1 | 0;
+	gas?: 1 | 0;
+	ball?: 1 | 0;
+	kick?: 1 | 0;
+
 	/** Ignores a target's substitute. */
 	authentic?: 1 | 0;
 	/** Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability. */

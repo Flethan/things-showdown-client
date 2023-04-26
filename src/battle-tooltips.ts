@@ -769,20 +769,35 @@ class BattleTooltips {
 			if (move.flags.powder && this.battle.gen > 5) {
 				text += `<p class="movetag">&#x2713; Powder <small>(doesn't affect Grass, Overcoat, Safety Goggles)</small></p>`;
 			}
-			if (move.flags.punch && ability === 'ironfist') {
+			// change for things
+			if (move.flags.punch /* && ability === 'ironfist' */) {
 				text += `<p class="movetag">&#x2713; Fist <small>(boosted by Iron Fist)</small></p>`;
 			}
 			if (move.flags.pulse && ability === 'megalauncher') {
 				text += `<p class="movetag">&#x2713; Pulse <small>(boosted by Mega Launcher)</small></p>`;
 			}
-			if (move.flags.bite && ability === 'strongjaw') {
-				text += `<p class="movetag">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>`;
+			// change for things
+			if (move.flags.bite /* && ability === 'strongjaw' */) {
+				text += `<p class="movetag">&#x2713; Bite <small>(activates Perish Jaws, triggers It's honey,)</small></p>`;
 			}
 			if ((move.recoil || move.hasCrashDamage) && ability === 'reckless') {
 				text += `<p class="movetag">&#x2713; Recoil <small>(boosted by Reckless)</small></p>`;
 			}
 			if (move.flags.bullet) {
 				text += `<p class="movetag">&#x2713; Bullet-like <small>(doesn't affect Bulletproof pokemon)</small></p>`;
+			}
+			// THINGS
+			if (move.flags.soda) {
+				text += `<p class="movetag">&#x2713; Soda <small>(soda!!!)</small></p>`;
+			}
+			if (move.flags.gas) {
+				text += `<p class="movetag">&#x2713; Gas <small>(activates Lingering Gas,)</small></p>`;
+			}
+			if (move.flags.kick) {
+				text += `<p class="movetag">&#x2713; Kick <small>(boosted by Strong Legs,)</small></p>`;
+			}
+			if (move.flags.ball) {
+				text += `<p class="movetag">&#x2713; Ball <small>(boosted by Ball Aura,)</small></p>`;
 			}
 		}
 		return text;
