@@ -1361,6 +1361,7 @@ export class BattleScene implements BattleSceneStub {
 			this.$spritesFront[spriteIndex].append(web.$el!);
 			this.sideConditions[siden][id] = [web];
 			break;
+		// THINGS
 		case 'dustcloud':
 			const dust = new Sprite(BattleEffects.dust, {
 				display: 'block',
@@ -1386,16 +1387,112 @@ export class BattleScene implements BattleSceneStub {
 			this.sideConditions[siden][id] = [puddle];
 			break;
 		case 'voidtrap':
-				const voidt = new Sprite(BattleEffects.void, {
-					display: 'block',
-					x: side.x + 15,
-					y: side.y - 35,
-					z: side.z,
-					opacity: 0.4,
-					scale: 0.7,
-				}, this);
-				this.$spritesFront[spriteIndex].append(voidt.$el!);
-				this.sideConditions[siden][id] = [voidt];
+			const voidt = new Sprite(BattleEffects.void, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(voidt.$el!);
+			this.sideConditions[siden][id] = [voidt];
+			break;
+		case 'eggscatter':
+			const eggs = new Sprite(BattleEffects.eggs, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(eggs.$el!);
+			this.sideConditions[siden][id] = [eggs];
+			break;
+		case 'autoturret':
+			const tur = new Sprite(BattleEffects.turret, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(tur.$el!);
+			this.sideConditions[siden][id] = [tur];
+			break;
+		case 'caltrops':
+			const caltrops = new Sprite(BattleEffects.caltrops, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(caltrops.$el!);
+			this.sideConditions[siden][id] = [caltrops];
+			break;
+		case 'hotcoals':
+			const coals = new Sprite(BattleEffects.coals, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(coals.$el!);
+			this.sideConditions[siden][id] = [coals];
+			break;
+		case 'permafrost':
+			const permafrost = new Sprite(BattleEffects.frost, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(permafrost.$el!);
+			this.sideConditions[siden][id] = [permafrost];
+			break;
+		case 'stormcell':
+			const stormc = new Sprite(BattleEffects.stormcell, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(stormc.$el!);
+			this.sideConditions[siden][id] = [stormc];
+			break;
+		case 'lightningstorm':
+			const lstorm = new Sprite(BattleEffects.lightningstorm, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(lstorm.$el!);
+			this.sideConditions[siden][id] = [lstorm];
+			break;
+		case 'beamfield':
+			const beams = new Sprite(BattleEffects.beams, {
+				display: 'block',
+				x: side.x + 15,
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.4,
+				scale: 0.7,
+			}, this);
+			this.$spritesFront[spriteIndex].append(beams.$el!);
+			this.sideConditions[siden][id] = [beams];
 			break;
 		}
 	}
@@ -2917,6 +3014,38 @@ const BattleEffects: {[k: string]: SpriteData} = {
 	},
 	void: {
 		url: 'void.png',
+		w: 120, h: 122,
+	},
+	beams: {
+		url: 'beams.png',
+		w: 120, h: 122,
+	},
+	caltrops: {
+		url: 'caltrops.png',
+		w: 120, h: 122,
+	},
+	coals: {
+		url: 'coals.png',
+		w: 120, h: 122,
+	},
+	eggs: {
+		url: 'eggs.png',
+		w: 120, h: 122,
+	},
+	frost: {
+		url: 'frost.png',
+		w: 120, h: 122,
+	},
+	lightningstorm: {
+		url: 'lightningstorm.png',
+		w: 120, h: 122,
+	},
+	stormcell: {
+		url: 'stormcell.png',
+		w: 120, h: 122,
+	},
+	turret: {
+		url: 'turret.png',
 		w: 120, h: 122,
 	},
 	//regular
