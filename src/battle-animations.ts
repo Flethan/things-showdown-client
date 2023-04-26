@@ -1366,7 +1366,7 @@ export class BattleScene implements BattleSceneStub {
 			const dust = new Sprite(BattleEffects.dust, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 55,
+				y: side.y - 15,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
@@ -1462,7 +1462,7 @@ export class BattleScene implements BattleSceneStub {
 			const stormc = new Sprite(BattleEffects.stormcell, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 55,
+				y: side.y - 15,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
@@ -1474,7 +1474,7 @@ export class BattleScene implements BattleSceneStub {
 			const lstorm = new Sprite(BattleEffects.lightningstorm, {
 				display: 'block',
 				x: side.x + 15,
-				y: side.y - 95,
+				y: side.y + 55,
 				z: side.z,
 				opacity: 0.4,
 				scale: 0.7,
