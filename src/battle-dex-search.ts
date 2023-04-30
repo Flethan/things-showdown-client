@@ -566,7 +566,12 @@ abstract class BattleTypedSearch<T extends SearchType> {
 		this.baseResults = null;
 		this.baseIllegalResults = null;
 
-		if (format.slice(0, 3) === 'gen') {
+		// THINGS
+		if (format.slice(0,6) === 'things') {
+			const gen = 8;
+			format = (format.slice(7) || 'customgame') as ID;
+			this.dex = Dex;
+		} else if (format.slice(0, 3) === 'gen') {
 			const gen = (Number(format.charAt(3)) || 6);
 			format = (format.slice(4) || 'customgame') as ID;
 			this.dex = Dex.forGen(gen);
