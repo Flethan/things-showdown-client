@@ -2296,40 +2296,23 @@ export class PokemonSprite extends Sprite {
 			moreActive++;
 			if (slot) slot++;
 		}
-		if (this.scene.gen <= 4 && moreActive) {
-			this.x = (slot - 0.52) * (this.isFrontSprite ? 1 : -1) * -55;
-			this.y = (this.isFrontSprite ? 1 : -1) + 1;
-			if (this.isFrontSprite) statbarOffset = 30 * slot;
-			if (!this.isFrontSprite) statbarOffset = -28 * slot;
-		} else {
-			switch (moreActive) {
-			case 0:
-				this.x = 0;
-				break;
-			case 1:
-				if (this.sp.pixelated) {
-					this.x = (slot * -100 + 18) * (this.isFrontSprite ? 1 : -1);
-				} else {
-					this.x = (slot * -75 + 18) * (this.isFrontSprite ? 1 : -1);
-				}
-				break;
-			case 2:
-				this.x = (slot * -70 + 20) * (this.isFrontSprite ? 1 : -1);
-				break;
-			}
-			this.y = this.isFrontSprite ? slot * 7 : slot * -10;
-			if (this.isFrontSprite) statbarOffset = 17 * slot;
-			if (this.isFrontSprite && !moreActive && this.sp.pixelated) statbarOffset = 15;
-			if (!this.isFrontSprite) statbarOffset = -7 * slot;
-			if (this.isFrontSprite && moreActive === 2) statbarOffset = 14 * slot - 10;
+
+		switch (moreActive) {
+		case 0:
+			this.x = 0;
+			break;
+		case 1:
+			this.x = (slot * -100 + 18) * (this.isFrontSprite ? 1 : -1);
+			break;
+		case 2:
+			this.x = (slot * -70 + 20) * (this.isFrontSprite ? 1 : -1);
+			break;
 		}
-		if (this.scene.gen <= 2) {
-			statbarOffset += this.isFrontSprite ? 20 : 1;
-		} else if (this.scene.gen <= 3) {
-			statbarOffset += this.isFrontSprite ? 30 : 5;
-		} else if (this.scene.gen !== 5) {
-			statbarOffset += this.isFrontSprite ? 30 : 20;
-		}
+		this.y = this.isFrontSprite ? slot * 7 : slot * -10;
+
+		statbarOffset = (this.isFrontSprite ? 1 : -1 ) * 7 * slot;
+		if (this.isFrontSprite && !moreActive) statbarOffset = 15;
+		if (this.isFrontSprite && moreActive === 2) statbarOffset = 14 * slot - 10;
 
 		let pos = this.scene.pos({
 			x: this.x,
@@ -2929,19 +2912,23 @@ export class PokemonSprite extends Sprite {
 		let typesbuf = '';
 		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];
 
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" /> ';
+		// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" />';
 		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" /> ';
 
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'SecondaryNone' : 'Secondary') + '.png" alt="Secondary Type" class="pixelated" /> ';
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'Unknown' : types[1]) + '.png" alt="' + ((!types[1] || types[1] === '???') ? 'None' : types[1]) + '" class="pixelated" /> ';
+		if (types[1] && types[1] !== '???') {
+			// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'SecondaryNone' : 'Secondary') + '.png" alt="Secondary Type" class="pixelated" />';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" /> ';
+		}
 
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'AddedNone' : 'Added') + '.png" alt="Added Type" class="pixelated" /> ';
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'Unknown' : types[1]) + '.png" alt="' + ((!addedType || addedType === '???') ? 'None' : addedType) + '" class="pixelated" /> ';
+		if (addedType && addedType !== '???') {
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Added') + '.png" alt="Added Type" class="pixelated" />';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" /> ';
+		}
 
 		if (elementTypes.length) typesbuf += '</div><div class ="types">'
 		for(const elementType of elementTypes) {
 			if (!elementType || elementType === '???') continue;
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Element') + '.png" alt="Element Type" class="pixelated" /> ';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Element') + '.png" alt="Element Type" class="pixelated" />';
 			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(elementType) + '.png" alt="' + elementType + '" class="pixelated" /> ';
 		}
 		if (elementTypes.length) typesbuf += '</div>'

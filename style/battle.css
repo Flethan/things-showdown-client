@@ -147,13 +147,13 @@ License: GPLv2
 	font-weight: normal;
 }
 .statbar .types {
-	margin: 0 -15px;
 	display: block;
 	text-align: center;
+	margin-top: -3px;
+	margin-bottom: -2px;
 }
 .statbar .types img {
 	vertical-align: top;
-	top: -2px;
 	position: relative;
 }
 .statbar .hpbar {
