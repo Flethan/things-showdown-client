@@ -146,6 +146,16 @@ License: GPLv2
 .statbar strong small {
 	font-weight: normal;
 }
+.statbar .types {
+	margin: 0 -15px;
+	display: block;
+	text-align: center;
+}
+.statbar .types img {
+	vertical-align: top;
+	top: -2px;
+	position: relative;
+}
 .statbar .hpbar {
 	position: relative;
 	border: 1px solid #777777;

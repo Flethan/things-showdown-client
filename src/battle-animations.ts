@@ -2817,7 +2817,8 @@ export class PokemonSprite extends Sprite {
 			buf += ` <img src="${Dex.resourcePrefix}sprites/misc/${symbol}.png" alt="${symbol}" style="vertical-align:text-bottom;" />`;
 		}
 
-		buf += `</strong><div class="hpbar"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;
+		buf += `</strong><div class="types">`;
+		buf += `</div><div class="hpbar"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;
 		buf += `</div>`;
 		return buf;
 	}
@@ -2906,23 +2907,6 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'infected') {
 			status += '<span class="infected">INFECTED</span> ';
 		}
-		if (pokemon.volatiles.typeadd && pokemon.volatiles.typeadd[1]) {
-			const type = pokemon.volatiles.typeadd[1];
-			status += '+<img src="' + Dex.resourcePrefix + 'sprites/types/' + type + '.png" alt="' + type + '" class="pixelated" /> ';
-		}
-		if (pokemon.volatiles.typechange && pokemon.volatiles.typechange[1]) {
-			const types = pokemon.volatiles.typechange[1].split('/');
-			for (let type of types) {
-				if (type === "???") type = "Unknown";
-				status += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
-			}
-		}
-		if (pokemon.volatiles.elementtypes && pokemon.volatiles.elementtypes[1]) {
-			const types = pokemon.volatiles.elementtypes[1].split('/');
-			for (const type of types) {
-				status += '∈<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(type) + '.png" alt="' + type + '" class="pixelated" /> ';
-			}
-		}
 		for (const stat in pokemon.boosts) {
 			if (pokemon.boosts[stat]) {
 				status += '<span class="' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span> ';
@@ -2941,6 +2925,30 @@ export class PokemonSprite extends Sprite {
 		}
 		let statusbar = this.$statbar.find('.status');
 		statusbar.html(status);
+
+		let typesbuf = '';
+		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];
+
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" /> ';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" /> ';
+
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'SecondaryNone' : 'Secondary') + '.png" alt="Secondary Type" class="pixelated" /> ';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'Unknown' : types[1]) + '.png" alt="' + ((!types[1] || types[1] === '???') ? 'None' : types[1]) + '" class="pixelated" /> ';
+
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'AddedNone' : 'Added') + '.png" alt="Added Type" class="pixelated" /> ';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'Unknown' : types[1]) + '.png" alt="' + ((!addedType || addedType === '???') ? 'None' : addedType) + '" class="pixelated" /> ';
+
+		if (elementTypes.length) typesbuf += '</div><div class ="types">'
+		for(const elementType of elementTypes) {
+			if (!elementType || elementType === '???') continue;
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Element') + '.png" alt="Element Type" class="pixelated" /> ';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(elementType) + '.png" alt="' + elementType + '" class="pixelated" /> ';
+		}
+		if (elementTypes.length) typesbuf += '</div>'
+
+		let typesbar = this.$statbar.find('.types');
+		typesbar.html(typesbuf)
+
 	}
 
 	private static getEffectTag(id: string) {
