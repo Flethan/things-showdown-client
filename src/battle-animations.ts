@@ -2912,18 +2912,24 @@ export class PokemonSprite extends Sprite {
 		let typesbuf = '';
 		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];
 
-		// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" />';
+		//typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" /> ';
+//
+		//if (types[1] && types[1] !== '???') {
+		//	typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" /> ';
+		//}
+		//
+		//if (addedType && addedType !== '???') {
+		//	typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" /> ';
+		//}
+
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" />';
 		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" /> ';
 
-		if (types[1] && types[1] !== '???') {
-			// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'SecondaryNone' : 'Secondary') + '.png" alt="Secondary Type" class="pixelated" />';
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" /> ';
-		}
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'SecondaryNone' : 'Secondary') + '.png" alt="Secondary Type" class="pixelated" />';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[1] || types[1] === '???') ? 'Unknown' : types[1]) + '.png" alt="' + ((!types[1] || types[1] === '???') ? 'None' : types[1]) + '" class="pixelated" /> ';
 
-		if (addedType && addedType !== '???') {
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Added') + '.png" alt="Added Type" class="pixelated" />';
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" /> ';
-		}
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'AddedNone' : 'Added') + '.png" alt="Added Type" class="pixelated" />';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'Unknown' : addedType) + '.png" alt="' + ((!addedType || addedType === '???') ? 'None' : addedType) + '" class="pixelated" /> ';
 
 		if (elementTypes.length) typesbuf += '</div><div class ="types">'
 		for(const elementType of elementTypes) {
