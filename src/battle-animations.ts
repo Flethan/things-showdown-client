@@ -2919,6 +2919,7 @@ export class PokemonSprite extends Sprite {
 		}
 		
 		if (addedType && addedType !== '???') {
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Added') + '.png" alt="Added Type" class="pixelated" />';
 			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" /> ';
 		}
 
