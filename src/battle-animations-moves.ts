@@ -32116,12 +32116,31 @@ export const BattleMoveAnims: AnimTable = {
 			}, 'swing');
 		},
 	},
+
+	// THINGS
+	headout: {
+		anim(scene, [attacker, defender]) {
+			scene.showEffect('olmec', {
+				x: defender.x + 15,
+				y: defender.y + 70,
+				z: defender.z,
+				opacity: 0,
+				scale: 1,
+			}, {
+				y: defender.y - 20,
+				opacity: 1,
+				xscale: 2,
+				time: 300,
+			}, 'linear', 'explode');
+		},
+	},
 };
 
 // THINGS
 BattleMoveAnims['study'] = {anim: BattleMoveAnims['mudbomb'].anim};
 BattleMoveAnims['soaringaxekick'] = {anim: BattleMoveAnims['bounce'].anim};
 BattleMoveAnims['ascend'] = {anim: BattleMoveAnims['fly'].anim};
+
 
 // placeholder animations
 BattleMoveAnims['torment'] = {anim: BattleMoveAnims['swagger'].anim};

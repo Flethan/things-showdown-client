@@ -3006,6 +3006,10 @@ export type AnimTable = {[k: string]: AnimData};
 
 const BattleEffects: {[k: string]: SpriteData} = {
 	//things
+	olmec: {
+		url: 'olmec.png',
+		w: 96, h: 96,
+	},
 	dust: {
 		url: 'dust.png',
 		w: 120, h: 122,
