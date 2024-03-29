@@ -132,7 +132,7 @@ License: GPLv2
 .statbar {
 	position: absolute;
 	display: none;
-	width: 154px;
+	width: 168px;
 	min-height: 40px;
 	padding: 2px 4px;
 }
@@ -150,11 +150,12 @@ License: GPLv2
 	display: block;
 	text-align: center;
 	margin-top: -3px;
-	margin-bottom: -2px;
+	margin-bottom: -3px;
 }
 .statbar .types img {
 	vertical-align: top;
 	position: relative;
+	padding: 0px 0px;
 }
 .statbar .hpbar {
 	position: relative;
@@ -163,8 +164,13 @@ License: GPLv2
 	padding: 1px;
 	height: 8px;
 	margin: 0 0 0 0;
-	width: 151px;
 	border-radius: 4px;
+}
+.doubles {
+	width: 136px;
+}
+.triples {
+	width: 104px;
 }
 
 /* The declaration order of these hp* classes is significant. */
@@ -227,19 +233,12 @@ License: GPLv2
 	top: -1px;
 	height: 10px;
 }
-.rstatbar .hpbar .hptext {
+.statbar .hpbar .hptext {
 	right: -32px;
 	border-radius: 0 4px 4px 0;
 }
-.lstatbar .hpbar .hptext {
-	left: -32px;
-	border-radius: 4px 0 0 4px;
-}
-.rstatbar .hpbar .hptextborder {
+.statbar .hpbar .hptextborder {
 	right: -3px;
-}
-.lstatbar .hpbar .hptextborder {
-	left: -3px;
 }
 .statbar .status {
 	min-height: 10px;
@@ -254,6 +253,11 @@ License: GPLv2
 	padding: 0px 1px;
 	border: 1px solid #FF4400;
 	border-radius: 3px;
+}
+.statbar span.stat {
+	margin-left: -1px;
+	width: 47px;
+	display: inline-block;
 }
 .statbar span.brn,
 .statbar span.psn,
@@ -271,6 +275,8 @@ License: GPLv2
 	padding: 1px 2px;
 	border: 0;
 	border-radius: 3px;
+	width: 47px;
+	display: inline-block;
 }
 .statbar span.brn {
 	background: #EE5533;

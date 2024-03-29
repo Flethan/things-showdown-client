@@ -365,8 +365,8 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			spa: 'SpA',
 			spd: 'SpD',
 			spe: 'Spe',
-			accuracy: 'Accuracy',
-			evasion: 'Evasion',
+			accuracy: 'Pre',
+			evasion: 'Dog',
 			spc: 'Spc',
 		};
 		if (!this.boosts[boostStat]) {
@@ -378,13 +378,13 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		if (!isRBY && (boostStat === 'accuracy' || boostStat === 'evasion')) {
 			if (this.boosts[boostStat] > 0) {
 				let goodBoostTable = [
-					'1&times;', '1.33&times;', '1.67&times;', '2&times;', '2.33&times;', '2.67&times;', '3&times;',
+					'+0;', '+15;', '+30;', '+45;', '+60;', '+75;', '+90;',
 				];
 				// let goodBoostTable = ['Normal', '+1', '+2', '+3', '+4', '+5', '+6'];
 				return '' + goodBoostTable[this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];
 			}
 			let badBoostTable = [
-				'1&times;', '0.75&times;', '0.6&times;', '0.5&times;', '0.43&times;', '0.38&times;', '0.33&times;',
+				'+0;', '-15;', '-30;', '-45;', '-60;', '-75;', '-90;',
 			];
 			// let badBoostTable = ['Normal', '&minus;1', '&minus;2', '&minus;3', '&minus;4', '&minus;5', '&minus;6'];
 			return '' + badBoostTable[-this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];

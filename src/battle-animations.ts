@@ -1565,7 +1565,8 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		let w = pokemon.hpWidth(150);
+		const moreActive = this.activeCount - 1;
+		let w = pokemon.hpWidth(164 - (moreActive * 32));
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
 		if (hpcolor === 'y') {
@@ -1589,7 +1590,8 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		let w = pokemon.hpWidth(150);
+		const moreActive = this.activeCount - 1;
+		let w = pokemon.hpWidth(164 - (moreActive * 32));
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
 		if (hpcolor === 'g') {
@@ -2289,7 +2291,8 @@ export class PokemonSprite extends Sprite {
 	}
 	recalculatePos(slot: number) {
 		let moreActive = this.scene.activeCount - 1;
-		let statbarOffset = 0;
+		let statbarOffsetX = 0;
+		let statbarOffsetY = 0;
 		const isFFA = this.scene.battle.gameType === 'freeforall';
 		if (isFFA) {
 			// create a gap between Pokemon on the same "side" as a distinction between FFA and Multi battles
@@ -2310,9 +2313,12 @@ export class PokemonSprite extends Sprite {
 		}
 		this.y = this.isFrontSprite ? slot * 7 : slot * -10;
 
-		statbarOffset = (this.isFrontSprite ? 1 : -1 ) * 7 * slot;
-		if (this.isFrontSprite && !moreActive) statbarOffset = 15;
-		if (this.isFrontSprite && moreActive === 2) statbarOffset = 14 * slot - 10;
+		if (this.isFrontSprite) statbarOffsetX = (32 * slot) - 26;
+		else statbarOffsetX = -40 * slot;
+
+		statbarOffsetY = (this.isFrontSprite ? 1 : -1 ) * 7 * slot;
+		if (this.isFrontSprite && !moreActive) statbarOffsetY = 15;
+		if (this.isFrontSprite && moreActive === 2) statbarOffsetY = 28 * slot - 14;
 
 		let pos = this.scene.pos({
 			x: this.x,
@@ -2326,8 +2332,8 @@ export class PokemonSprite extends Sprite {
 
 		this.left = pos.left;
 		this.top = pos.top;
-		this.statbarLeft = pos.left - 80;
-		this.statbarTop = pos.top - 73 - statbarOffset;
+		this.statbarLeft = pos.left - 80 - statbarOffsetX;
+		this.statbarTop = pos.top - 73 - statbarOffsetY;
 		if (this.statbarTop < -4) this.statbarTop = -4;
 
 		if (moreActive) {
@@ -2779,7 +2785,19 @@ export class PokemonSprite extends Sprite {
 	/////////////////////////////////////////////////////////////////////
 
 	getStatbarHTML(pokemon: Pokemon) {
-		let buf = '<div class="statbar' + (this.isFrontSprite ? ' lstatbar' : ' rstatbar') + '" style="display: none">';
+		let format = '';
+		switch (this.scene.activeCount) {
+			case 1:
+				format = 'singles';
+				break;
+			case 2:
+				format = 'doubles';
+				break;
+			case 3:
+				format = 'triples';
+				break;	
+		};
+		let buf = '<div class="statbar ' + (this.isFrontSprite ? 'lstatbar ' : 'rstatbar ') + format + '" style="display: none">';
 		const ignoreNick = this.isFrontSprite && (this.scene.battle.ignoreOpponent || this.scene.battle.ignoreNicks);
 		buf += `<strong>${BattleLog.escapeHTML(ignoreNick ? pokemon.speciesForme : pokemon.name)}`;
 		const gender = pokemon.gender;
@@ -2801,7 +2819,7 @@ export class PokemonSprite extends Sprite {
 		}
 
 		buf += `</strong><div class="types">`;
-		buf += `</div><div class="hpbar"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;
+		buf += `</div><div class="hpbar ${format}"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;
 		buf += `</div>`;
 		return buf;
 	}
@@ -2839,10 +2857,11 @@ export class PokemonSprite extends Sprite {
 			this.scene.$stat.append(this.$statbar);
 			updatePrevhp = true;
 		}
+		const moreActive = this.scene.activeCount - 1;
 		let hpcolor;
 		if (updatePrevhp || updateHp) {
 			hpcolor = BattleScene.getHPColor(pokemon);
-			let w = pokemon.hpWidth(150);
+			let w = pokemon.hpWidth(164 - (moreActive * 32));
 			let $hp = this.$statbar.find('.hp');
 			$hp.css({
 				width: w,
@@ -2855,7 +2874,7 @@ export class PokemonSprite extends Sprite {
 		}
 		if (updatePrevhp) {
 			let $prevhp = this.$statbar.find('.prevhp');
-			$prevhp.css('width', pokemon.hpWidth(150) + 1);
+			$prevhp.css('width', pokemon.hpWidth(164 - (moreActive * 32)) + 1);
 			if (hpcolor === 'g') $prevhp.removeClass('prevhp-yellow prevhp-red');
 			else if (hpcolor === 'y') $prevhp.removeClass('prevhp-red').addClass('prevhp-yellow');
 			else $prevhp.addClass('prevhp-yellow prevhp-red');
@@ -2876,23 +2895,23 @@ export class PokemonSprite extends Sprite {
 		} else if (pokemon.status === 'prone') {
 			status += '<span class="prone">PRONE</span> ';
 		} else if (pokemon.status === 'banished') {
-			status += '<span class="banished">BANISHED</span> ';
+			status += '<span class="banished">BANSH</span> ';
 		} else if (pokemon.status === 'blinded') {
-			status += '<span class="blinded">BLINDED</span> ';
+			status += '<span class="blinded">BLIND</span> ';
 		} else if (pokemon.status === 'pressurized') {
-			status += '<span class="pressurized">PRESSURIZED</span> ';
+			status += '<span class="pressurized">PRESS</span> ';
 		} else if (pokemon.status === 'fluctuant') {
-			status += '<span class="fluctuant">FLUCTUANT</span> ';
+			status += '<span class="fluctuant">FLUCT</span> ';
 		} else if (pokemon.status === 'wounded') {
-			status += '<span class="wounded">WOUNDED</span> ';
+			status += '<span class="wounded">WOUND</span> ';
 		} else if (pokemon.status === 'distanced') {
-			status += '<span class="distanced">DISTANCED</span> ';
+			status += '<span class="distanced">DISTD</span> ';
 		} else if (pokemon.status === 'infected') {
-			status += '<span class="infected">INFECTED</span> ';
+			status += '<span class="infected">INFCT</span> ';
 		}
 		for (const stat in pokemon.boosts) {
 			if (pokemon.boosts[stat]) {
-				status += '<span class="' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span> ';
+				status += '<span class="stat ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
 			}
 		}
 
@@ -2912,15 +2931,15 @@ export class PokemonSprite extends Sprite {
 		let typesbuf = '';
 		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];
 
-		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" /> ';
+		typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'Unknown' : types[0]) + '.png" alt="' + ((!types[0] || types[0] === '???') ? 'None' : types[0]) + '" class="pixelated" />';
 
 		if (types[1] && types[1] !== '???') {
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" /> ';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(types[1]) + '.png" alt="' + types[1] + '" class="pixelated" />';
 		}
 		
 		if (addedType && addedType !== '???') {
 			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Added') + '.png" alt="Added Type" class="pixelated" />';
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" /> ';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(addedType) + '.png" alt="' + addedType + '" class="pixelated" />';
 		}
 
 		// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!types[0] || types[0] === '???') ? 'PrimaryNone' : 'Primary') + '.png" alt="Primary Type" class="pixelated" />';
@@ -2932,11 +2951,10 @@ export class PokemonSprite extends Sprite {
 		// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'AddedNone' : 'Added') + '.png" alt="Added Type" class="pixelated" />';
 		// typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent((!addedType || addedType === '???') ? 'Unknown' : addedType) + '.png" alt="' + ((!addedType || addedType === '???') ? 'None' : addedType) + '" class="pixelated" /> ';
 
-		if (elementTypes.length) typesbuf += '</div><div class ="types">'
-		for(const elementType of elementTypes) {
+		if (elementTypes.length) typesbuf += '</div><div class ="types"><img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Element') + '.png" alt="Element Type" class="pixelated" />';
+		for (const elementType of elementTypes) {
 			if (!elementType || elementType === '???') continue;
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent('Element') + '.png" alt="Element Type" class="pixelated" />';
-			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(elementType) + '.png" alt="' + elementType + '" class="pixelated" /> ';
+			typesbuf += '<img src="' + Dex.resourcePrefix + 'sprites/types/' + encodeURIComponent(elementType) + '.png" alt="' + elementType + '" class="pixelated" />';
 		}
 		if (elementTypes.length) typesbuf += '</div>'
 
