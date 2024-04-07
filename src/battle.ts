@@ -365,8 +365,8 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 			spa: 'SpA',
 			spd: 'SpD',
 			spe: 'Spe',
-			accuracy: 'Pre',
-			evasion: 'Dog',
+			accuracy: 'Prec',
+			evasion: 'Dodg',
 			spc: 'Spc',
 		};
 		if (!this.boosts[boostStat]) {
@@ -378,26 +378,26 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		if (!isRBY && (boostStat === 'accuracy' || boostStat === 'evasion')) {
 			if (this.boosts[boostStat] > 0) {
 				let goodBoostTable = [
-					'+0;', '+15;', '+30;', '+45;', '+60;', '+75;', '+90;',
+					'+0', '+12', '+24', '+36', '+48', '+60', '+72',
 				];
 				// let goodBoostTable = ['Normal', '+1', '+2', '+3', '+4', '+5', '+6'];
 				return '' + goodBoostTable[this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];
 			}
 			let badBoostTable = [
-				'+0;', '-15;', '-30;', '-45;', '-60;', '-75;', '-90;',
+				'+0', '-12', '-24', '-36', '-48', '-60', '-72',
 			];
 			// let badBoostTable = ['Normal', '&minus;1', '&minus;2', '&minus;3', '&minus;4', '&minus;5', '&minus;6'];
 			return '' + badBoostTable[-this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];
 		}
 		if (this.boosts[boostStat] > 0) {
 			let goodBoostTable = [
-				'1&times;', '1.5&times;', '2&times;', '2.5&times;', '3&times;', '3.5&times;', '4&times;',
+				'&times;1.0', '&times;1.5', '&times;2.0', '&times;2.5', '&times;3.0', '&times;3.5', '&times;4.0',
 			];
 			// let goodBoostTable = ['Normal', '+1', '+2', '+3', '+4', '+5', '+6'];
 			return '' + goodBoostTable[this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];
 		}
 		let badBoostTable = [
-			'1&times;', '0.67&times;', '0.5&times;', '0.4&times;', '0.33&times;', '0.29&times;', '0.25&times;',
+			'&div;1.0', '&div;1.5', '&div;2.0', '&div;2.5', '&div;3.0', '&div;3.5', '&div;4.0',
 		];
 		// let badBoostTable = ['Normal', '&minus;1', '&minus;2', '&minus;3', '&minus;4', '&minus;5', '&minus;6'];
 		return '' + badBoostTable[-this.boosts[boostStat]] + '&nbsp;' + boostStatTable[boostStat];
@@ -1346,13 +1346,13 @@ export class Battle {
 				if (ability) {
 					this.activateAbility(poke, ability.name);
 				}
-				this.weatherTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 8;
+				this.weatherTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 10;
 				this.weatherMinTimeLeft = (this.gen <= 5 || isExtremeWeather) ? 0 : 5;
 			} else if (isExtremeWeather) {
 				this.weatherTimeLeft = 0;
 				this.weatherMinTimeLeft = 0;
 			} else {
-				this.weatherTimeLeft = (this.gen <= 3 ? 5 : 8);
+				this.weatherTimeLeft = (this.gen <= 3 ? 5 : 10);
 				this.weatherMinTimeLeft = (this.gen <= 3 ? 0 : 5);
 			}
 		}
@@ -3060,6 +3060,8 @@ export class Battle {
 				}
 				if (this.gen > 6) maxTimeLeft = 8;
 			}
+			const landscapes = ['richsoil', 'spatialexpansion', 'greenground', 'sudscape', 'mysticalsong', 'nullland', 'springfloor', 'invitingsurroundings'];
+			if (landscapes.includes(effect.id)) maxTimeLeft = 10;
 			this.addPseudoWeather(effect.name, 5, maxTimeLeft);
 
 			switch (effect.id) {

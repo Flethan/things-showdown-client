@@ -882,17 +882,16 @@ export class BattleScene implements BattleSceneStub {
 	}
 
 	pseudoWeatherLeft(pWeather: WeatherState) {
-		let buf = '<br />' + Dex.moves.get(pWeather[0]).name;
-		if (!pWeather[1] && pWeather[2]) {
-			pWeather[1] = pWeather[2];
-			pWeather[2] = 0;
+		let buf = ' | ' + Dex.moves.get(pWeather[0]).name;
+		let turns = pWeather[1];
+		let exTurns = pWeather[2];
+		if (!turns && exTurns) {
+			turns = exTurns;
+			exTurns = 0;
 		}
 		if (this.battle.gen < 7 && this.battle.hardcoreMode) return buf;
-		if (pWeather[2]) {
-			return buf + ' <small>(' + pWeather[1] + ' or ' + pWeather[2] + ' turns)</small>';
-		}
-		if (pWeather[1]) {
-			return buf + ' <small>(' + pWeather[1] + ' turn' + (pWeather[1] === 1 ? '' : 's') + ')</small>';
+		if (turns || exTurns) {
+			return buf += ` <small>${turns || ('+' + exTurns)}</small>`;
 		}
 		return buf; // weather not found
 	}
@@ -937,10 +936,10 @@ export class BattleScene implements BattleSceneStub {
 				friendlyatmosphere: 'Friendly Atmosphere',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.weather] || this.battle.weather}`;
-			if (this.battle.weatherMinTimeLeft !== 0) {
-				weatherhtml += ` <small>(${this.battle.weatherMinTimeLeft} or ${this.battle.weatherTimeLeft} turns)</small>`;
-			} else if (this.battle.weatherTimeLeft !== 0) {
-				weatherhtml += ` <small>(${this.battle.weatherTimeLeft} turn${this.battle.weatherTimeLeft === 1 ? '' : 's'})</small>`;
+			const turns = this.battle.weatherMinTimeLeft;
+			const exTurns = this.battle.weatherTimeLeft;
+			if (turns || exTurns) {
+				weatherhtml += ` <small>${turns || ('+' + exTurns)}</small>`;
 			}
 			const nullifyWeather = this.battle.abilityActive(['Air Lock', 'Cloud Nine']);
 			weatherhtml = `${nullifyWeather ? '<s>' : ''}${weatherhtml}${nullifyWeather ? '</s>' : ''}`;
@@ -949,6 +948,7 @@ export class BattleScene implements BattleSceneStub {
 		for (const pseudoWeather of this.battle.pseudoWeather) {
 			weatherhtml += this.pseudoWeatherLeft(pseudoWeather);
 		}
+		weatherhtml = weatherhtml.replace(/^[ \|]+/g, '');
 
 		return weatherhtml;
 	}
@@ -1005,7 +1005,7 @@ export class BattleScene implements BattleSceneStub {
 		for (const side of this.battle.sides) {
 			weatherhtml += this.sideConditionsLeft(side);
 		}
-		if (weatherhtml) weatherhtml = `<br />` + weatherhtml;
+		// if (weatherhtml) weatherhtml = ' | ' + weatherhtml;
 
 		if (instant) {
 			this.$weather.html('<em>' + weatherhtml + '</em>');
@@ -1565,8 +1565,8 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		const moreActive = this.activeCount - 1;
-		let w = pokemon.hpWidth(164 - (moreActive * 32));
+		const pw = this.activeCount === 3 ? 104 : 154;
+		let w = pokemon.hpWidth(pw - 4);
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
 		if (hpcolor === 'y') {
@@ -2300,25 +2300,24 @@ export class PokemonSprite extends Sprite {
 			if (slot) slot++;
 		}
 
+		const sign = this.isFrontSprite ? 1 : -1;
 		switch (moreActive) {
 		case 0:
 			this.x = 0;
 			break;
 		case 1:
-			this.x = (slot * -100 + 18) * (this.isFrontSprite ? 1 : -1);
+			this.x = (slot * -100 + 18) * sign;
 			break;
 		case 2:
-			this.x = (slot * -70 + 20) * (this.isFrontSprite ? 1 : -1);
+			this.x = (slot * -70 + 20) * sign;
+			statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
+			statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot)
 			break;
 		}
-		this.y = this.isFrontSprite ? slot * 7 : slot * -10;
+		this.y = slot * 7 * sign;
 
-		if (this.isFrontSprite) statbarOffsetX = (32 * slot) - 26;
-		else statbarOffsetX = -40 * slot;
-
-		statbarOffsetY = (this.isFrontSprite ? 1 : -1 ) * 7 * slot;
 		if (this.isFrontSprite && !moreActive) statbarOffsetY = 15;
-		if (this.isFrontSprite && moreActive === 2) statbarOffsetY = 28 * slot - 14;
+		// if (this.isFrontSprite && moreActive === 2) statbarOffsetY = 28 * slot - 14;
 
 		let pos = this.scene.pos({
 			x: this.x,
@@ -2332,8 +2331,8 @@ export class PokemonSprite extends Sprite {
 
 		this.left = pos.left;
 		this.top = pos.top;
-		this.statbarLeft = pos.left - 80 - statbarOffsetX;
-		this.statbarTop = pos.top - 73 - statbarOffsetY;
+		this.statbarLeft = 100 + (this.isFrontSprite ? 32 : 0) + statbarOffsetX;
+		this.statbarTop = 40 + (this.isFrontSprite ? 0 : 130) + statbarOffsetY;
 		if (this.statbarTop < -4) this.statbarTop = -4;
 
 		if (moreActive) {
@@ -2804,7 +2803,7 @@ export class PokemonSprite extends Sprite {
 		if (gender === 'M' || gender === 'F') {
 			buf += ` <img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" />`;
 		}
-		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
+		// buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 
 		let symbol = '';
 		if (pokemon.getSpecies().forme === 'Infinite') symbol = 'infinite';
@@ -2819,7 +2818,7 @@ export class PokemonSprite extends Sprite {
 		}
 
 		buf += `</strong><div class="types">`;
-		buf += `</div><div class="hpbar ${format}"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="status"></div>`;
+		buf += `</div><div class="hpbar ${format}"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="card"></div><div class="status"></div>`;
 		buf += `</div>`;
 		return buf;
 	}
@@ -2861,7 +2860,7 @@ export class PokemonSprite extends Sprite {
 		let hpcolor;
 		if (updatePrevhp || updateHp) {
 			hpcolor = BattleScene.getHPColor(pokemon);
-			let w = pokemon.hpWidth(164 - (moreActive * 32));
+			let w = pokemon.hpWidth(163 - (moreActive * 30));
 			let $hp = this.$statbar.find('.hp');
 			$hp.css({
 				width: w,
@@ -2874,12 +2873,20 @@ export class PokemonSprite extends Sprite {
 		}
 		if (updatePrevhp) {
 			let $prevhp = this.$statbar.find('.prevhp');
-			$prevhp.css('width', pokemon.hpWidth(164 - (moreActive * 32)) + 1);
+			$prevhp.css('width', pokemon.hpWidth(163 - (moreActive * 30)) + 1);
 			if (hpcolor === 'g') $prevhp.removeClass('prevhp-yellow prevhp-red');
 			else if (hpcolor === 'y') $prevhp.removeClass('prevhp-red').addClass('prevhp-yellow');
 			else $prevhp.addClass('prevhp-yellow prevhp-red');
 		}
+		let $hpbar = this.$statbar.find('.hpbar');
+		const statuses = ['prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'infected'];
+		if (statuses.includes(pokemon.status)) {
+			$hpbar.removeClass(statuses.join(' '));
+			$hpbar.addClass(pokemon.status);
+			this.updateHPText(pokemon);
+		};
 		let status = '';
+		let cardBg = '';
 		if (pokemon.status === 'brn') {
 			status += '<span class="brn">BRN</span> ';
 		} else if (pokemon.status === 'psn') {
@@ -2892,31 +2899,38 @@ export class PokemonSprite extends Sprite {
 			status += '<span class="par">PAR</span> ';
 		} else if (pokemon.status === 'frz') {
 			status += '<span class="frz">FRZ</span> ';
-		} else if (pokemon.status === 'prone') {
-			status += '<span class="prone">PRONE</span> ';
-		} else if (pokemon.status === 'banished') {
-			status += '<span class="banished">BANSH</span> ';
-		} else if (pokemon.status === 'blinded') {
-			status += '<span class="blinded">BLIND</span> ';
-		} else if (pokemon.status === 'pressurized') {
-			status += '<span class="pressurized">PRESS</span> ';
-		} else if (pokemon.status === 'fluctuant') {
-			status += '<span class="fluctuant">FLUCT</span> ';
-		} else if (pokemon.status === 'wounded') {
-			status += '<span class="wounded">WOUND</span> ';
-		} else if (pokemon.status === 'distanced') {
-			status += '<span class="distanced">DISTD</span> ';
-		} else if (pokemon.status === 'infected') {
-			status += '<span class="infected">INFCT</span> ';
-		}
+		} 
+		// else if (pokemon.status === 'prone') {
+		// 	status += '<span class="prone">PRN</span> ';
+		// } else if (pokemon.status === 'banished') {
+		// 	status += '<span class="banished">BAN</span> ';
+		// } else if (pokemon.status === 'blinded') {
+		// 	status += '<span class="blinded">BLN</span> ';
+		// } else if (pokemon.status === 'pressurized') {
+		// 	status += '<span class="pressurized">PRS</span> ';
+		// } else if (pokemon.status === 'fluctuant') {
+		// 	status += '<span class="fluctuant">FLT</span> ';
+		// } else if (pokemon.status === 'wounded') {
+		// 	status += '<span class="wounded">WND</span> ';
+		// } else if (pokemon.status === 'distanced') {
+		// 	status += '<span class="distanced">DST</span> ';
+		// } else if (pokemon.status === 'infected') {
+		// 	status += '<span class="infected">INF</span> ';
+		// }
 		for (const stat in pokemon.boosts) {
 			if (pokemon.boosts[stat]) {
-				status += '<span class="stat ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
+				status += '<span class="stat boost ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
 			}
 		}
 
 		for (let i in pokemon.volatiles) {
-			status += PokemonSprite.getEffectTag(i);
+			if (i.startsWith('playingcard')) {
+				const num = +i[10];
+				const suit = ['S','M','L','F','A'].indexOf(i[11]);
+				const top = suit * 36;
+				const left = (num - 1) * 26;
+				cardBg = `transparent url(${Dex.resourcePrefix}sprites/cardicons-sheet.png?g8) no-repeat scroll -${left}px -${top}px`;
+			} else status += PokemonSprite.getEffectTag(i);
 		}
 		for (let i in pokemon.turnstatuses) {
 			if (i === 'roost' && !pokemon.getTypeList().includes('Flying')) continue;
@@ -2927,6 +2941,8 @@ export class PokemonSprite extends Sprite {
 		}
 		let statusbar = this.$statbar.find('.status');
 		statusbar.html(status);
+		let cardslot = this.$statbar.find('.card');
+		cardslot.css('background', cardBg);
 
 		let typesbuf = '';
 		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];
@@ -2975,15 +2991,33 @@ export class PokemonSprite extends Sprite {
 		if (!this.$statbar) return;
 		let $hptext = this.$statbar.find('.hptext');
 		let $hptextborder = this.$statbar.find('.hptextborder');
+		let statusbuf = '';
+		if (pokemon.status === 'prone') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">PRN</p>`;
+		} else if (pokemon.status === 'banished') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">BAN</p>`;
+		} else if (pokemon.status === 'blinded') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">BLN</p>`;
+		} else if (pokemon.status === 'pressurized') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">PRS</p>`;
+		} else if (pokemon.status === 'fluctuant') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">FLT</p>`;
+		} else if (pokemon.status === 'wounded') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">WND</p>`;
+		} else if (pokemon.status === 'distanced') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">DST</p>`;
+		} else if (pokemon.status === 'infected') {
+			statusbuf = `<p style="font-family: &quot;Lucida Console&quot;, &quot;Courier New&quot;, monospace;margin: 0;">INF</p>`;
+		}
 		if (pokemon.maxhp === 48 || this.scene.battle.hardcoreMode && pokemon.maxhp === 100) {
 			$hptext.hide();
 			$hptextborder.hide();
 		} else if (this.scene.battle.hardcoreMode) {
-			$hptext.html(pokemon.hp + '/');
+			$hptext.html(statusbuf + pokemon.hp + '/');
 			$hptext.show();
 			$hptextborder.show();
 		} else {
-			$hptext.html(pokemon.hpWidth(100) + '%');
+			$hptext.html(statusbuf + pokemon.hpWidth(100) + '%');
 			$hptext.show();
 			$hptextborder.show();
 		}

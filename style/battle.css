@@ -132,14 +132,15 @@ License: GPLv2
 .statbar {
 	position: absolute;
 	display: none;
-	width: 168px;
+	width: 154px;
 	min-height: 40px;
 	padding: 2px 4px;
 }
 .statbar strong {
-	margin: 0 -15px;
+	margin: 0 -4px 0 2px;
 	display: block;
 	text-align: center;
+	white-space: nowrap;
 	color: #222222;
 	text-shadow: #FFFFFF 1px 1px 0, #FFFFFF 1px -1px 0, #FFFFFF -1px 1px 0, #FFFFFF -1px -1px 0;
 }
@@ -166,8 +167,32 @@ License: GPLv2
 	margin: 0 0 0 0;
 	border-radius: 4px;
 }
-.doubles {
-	width: 136px;
+.statbar .hpbar.prone {
+	border-color: #a2c4c9;
+}
+.statbar .hpbar.banished {
+	border-color: #444444;
+}
+.statbar .hpbar.blinded {
+	border-color: #b4a7d6;
+}
+.statbar .hpbar.pressurized {
+	border-color: #45818e;
+}
+.rstatbar .hpbar.fluctuant {
+	border-color: #6d9eeb;
+}
+.lstatbar .hpbar.fluctuant {
+	border-color: #e06666;
+}
+.statbar .hpbar.wounded {
+	border-color: #cc4125;
+}
+.statbar .hpbar.distanced {
+	border-color: #5c4e4b;
+}
+.statbar .hpbar.infected {
+	border-color: #ff00ff;
 }
 .triples {
 	width: 104px;
@@ -224,6 +249,34 @@ License: GPLv2
 	top: -1px;
 	text-align: center;
 }
+.statbar .hpbar.prone .hptext {
+	background: #a2c4c9;
+	color: black;
+	text-shadow: #EEE 0 1px 0;
+}
+.statbar .hpbar.banished .hptext {
+	background: #444444;
+}
+.statbar .hpbar.blinded .hptext {
+	background: #b4a7d6;
+	color: black;
+	text-shadow: #EEE 0 1px 0;
+}
+.statbar .hpbar.pressurized .hptext {
+	background: #45818e;
+}
+.statbar .hpbar.fluctuant .hptext {
+	background: linear-gradient(50deg, #6d9eeb 30%, #e06666 70%);
+}
+.statbar .hpbar.wounded .hptext {
+	background: #cc4125;
+}
+.statbar .hpbar.distanced .hptext {
+	background: #5c4e4b;
+}
+.statbar .hpbar.infected .hptext {
+	background: #ff00ff;
+}
 .statbar .hpbar .hptextborder {
 	position: absolute;
 	background: transparent;
@@ -233,12 +286,114 @@ License: GPLv2
 	top: -1px;
 	height: 10px;
 }
-.statbar .hpbar .hptext {
+.statbar .hpbar.prone .hptextborder {
+	border-color: #a2c4c9;
+}
+.statbar .hpbar.banished .hptextborder {
+	border-color: #444444;
+}
+.statbar .hpbar.blinded .hptextborder {
+	border-color: #b4a7d6;
+}
+.statbar .hpbar.pressurized .hptextborder {
+	border-color: #45818e;
+}
+.rstatbar .hpbar.fluctuant .hptextborder {
+	border-color: #6d9eeb;
+}
+.lstatbar .hpbar.fluctuant .hptextborder {
+	border-color: #e06666;
+}
+.statbar .hpbar.wounded .hptextborder {
+	border-color: #cc4125;
+}
+.statbar .hpbar.distanced .hptextborder {
+	border-color: #5c4e4b;
+}
+.statbar .hpbar.infected .hptextborder {
+	border-color: #ff00ff;
+}
+.rstatbar .hpbar .hptext {
 	right: -32px;
 	border-radius: 0 4px 4px 0;
 }
-.statbar .hpbar .hptextborder {
-	right: -3px;
+.rstatbar .hpbar.prone .hptext,
+.rstatbar .hpbar.banished .hptext,
+.rstatbar .hpbar.blinded .hptext,
+.rstatbar .hpbar.pressurized .hptext,
+.rstatbar .hpbar.fluctuant .hptext,
+.rstatbar .hpbar.wounded .hptext,
+.rstatbar .hpbar.distanced .hptext,
+.rstatbar .hpbar.infected .hptext {
+	border-radius: 4px 4px 4px 0;
+	height: 24px;
+	margin-top: -12px;
+}
+.lstatbar .hpbar .hptext {
+	left: -32px;
+	border-radius: 4px 0 0 4px;
+}
+.lstatbar .hpbar.prone .hptext,
+.lstatbar .hpbar.banished .hptext,
+.lstatbar .hpbar.blinded .hptext,
+.lstatbar .hpbar.pressurized .hptext,
+.lstatbar .hpbar.fluctuant .hptext,
+.lstatbar .hpbar.wounded .hptext,
+.lstatbar .hpbar.distanced .hptext,
+.lstatbar .hpbar.infected .hptext {
+	border-radius: 4px 4px 0 4px;
+	height: 24px;
+	margin-top: -12px;
+}
+.rstatbar .hpbar .hptextborder {
+	right: -2px;
+}
+.lstatbar .hpbar .hptextborder {
+	left: -2px;
+}
+.statbar span.prone {
+	background: #a2c4c9;
+	color: #000000;
+}
+.statbar span.banished {
+	background: #999999;
+	color: #000000;
+}
+.statbar span.blinded {
+	background: #b4a7d6;
+	color: #000000;
+}
+.statbar span.pressurized {
+	background: #45818e;
+	color: #000000;
+}
+.statbar span.fluctuant {
+	background: linear-gradient(25deg, #6d9eeb 30%, #e06666 70%);
+	color: #000000;
+}
+.statbar span.wounded {
+	background: #cc4125;
+	color: #000000;
+}
+.statbar span.distanced {
+	background: #5c4e4b;
+	color: #000000;
+}
+.statbar span.infected {
+	background: #ff00ff;
+	color: #000000;
+}
+.statbar .card {
+	position: absolute;
+	margin: 4px;
+	width: 26px;
+	height: 36px;
+}
+.rstatbar .card {
+	right: -32px;
+}
+.lstatbar .card {
+	left: -32px;
 }
 .statbar .status {
 	min-height: 10px;
@@ -330,6 +485,10 @@ License: GPLv2
 	background: #ff00ff;
 	color: #000000;
 }
+.statbar span.boost {
+	text-align: center;
+	font-weight: 900;
+}
 .statbar span.bad {
 	background: #FFE5E0;
 	color: #FF4400;
@@ -339,11 +498,13 @@ License: GPLv2
 	background: #E5FFE0;
 	color: #33AA00;
 	border-color: #33AA00;
+	text-align: center;
 }
 .statbar span.neutral {
 	background: #F0F0F0;
 	color: #555555;
 	border-color: #555555;
+	text-align: center;
 }
 .leftbar {
 	position: absolute;
@@ -472,11 +633,14 @@ License: GPLv2
 }
 .weather em {
 	display: block;
-	margin: 24px 0 0 115px;
+	margin: 10px 0 0 210px;
 	font-size: 12pt;
 }
 .weather em small {
 	font-style: normal;
+	font-size: 14pt;
+	font-weight: 800;
+	font-family: Helvetica, sans-serif;
 }
 /* things */
 .locustswarmweather,
