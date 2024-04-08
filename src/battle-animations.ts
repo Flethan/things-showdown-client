@@ -2879,18 +2879,16 @@ export class PokemonSprite extends Sprite {
 			else $prevhp.addClass('prevhp-yellow prevhp-red');
 		}
 		let $hpbar = this.$statbar.find('.hpbar');
-		const statuses = ['prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'infected'];
-		if (statuses.includes(pokemon.status)) {
-			$hpbar.removeClass(statuses.join(' '));
-			$hpbar.addClass(pokemon.status);
-			this.updateHPText(pokemon);
-		};
+		const STATUSES = ['prone', 'banished', 'blinded', 'pressurized', 'fluctuant', 'wounded', 'distanced', 'infected'];
+		$hpbar.removeClass(STATUSES.join(' '));
+		if (STATUSES.includes(pokemon.status)) $hpbar.addClass(pokemon.status);
+		this.updateHPText(pokemon);
 
 		let cardBg = '';
 		let top = 0;
 		let left = 0;
 		if (pokemon.card > 0) {
-			top = Math.floor((pokemon.card - 1) / 5) * 36;
+			top = Math.floor((pokemon.card - 1) / 10) * 36;
 			left = ((pokemon.card - 1) % 10) * 26;
 			cardBg = `transparent url(${Dex.resourcePrefix}sprites/cardicons-sheet.png?g8) no-repeat scroll -${left}px -${top}px`;
 		} else if (pokemon.card === -1) {

@@ -150,8 +150,7 @@ License: GPLv2
 .statbar .types {
 	display: block;
 	text-align: center;
-	margin-top: -3px;
-	margin-bottom: -3px;
+	margin: -3px -2px -3px 2px;
 }
 .statbar .types img {
 	vertical-align: top;
@@ -485,14 +484,11 @@ License: GPLv2
 	background: #ff00ff;
 	color: #000000;
 }
-.statbar span.boost {
-	text-align: center;
-	font-weight: 900;
-}
 .statbar span.bad {
 	background: #FFE5E0;
 	color: #FF4400;
 	border-color: #FF4400;
+	text-align: center;
 }
 .statbar span.good {
 	background: #E5FFE0;
@@ -505,6 +501,10 @@ License: GPLv2
 	color: #555555;
 	border-color: #555555;
 	text-align: center;
+}
+.statbar span.boost {
+	text-align: left;
+	font-weight: 900;
 }
 .leftbar {
 	position: absolute;

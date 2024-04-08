@@ -662,8 +662,8 @@ class BattleTextParser {
 			let template = this.template('card');
 			if (+card > 0) {
 				const suits = ['Solitaries', 'Multiples', 'Links', 'Shards', 'Aberrations'];
-				const num = ((+card - 1) % 10);
-				const suit = suits[Math.floor((+card - 1) / 5)];
+				let num: number | string = ((+card - 1) % 10) + 1;
+				const suit = suits[Math.floor((+card - 1) / 10)];
 				template = template.replace('[CARD]', `${num} of ${suit}`);
 			} else if (+card === -1) {
 				template = template.replace('[CARD]', 'card');
