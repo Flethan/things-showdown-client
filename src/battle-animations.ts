@@ -2885,8 +2885,23 @@ export class PokemonSprite extends Sprite {
 			$hpbar.addClass(pokemon.status);
 			this.updateHPText(pokemon);
 		};
-		let status = '';
+
 		let cardBg = '';
+		let top = 0;
+		let left = 0;
+		if (pokemon.card > 0) {
+			top = Math.floor((pokemon.card - 1) / 5) * 36;
+			left = ((pokemon.card - 1) % 10) * 26;
+			cardBg = `transparent url(${Dex.resourcePrefix}sprites/cardicons-sheet.png?g8) no-repeat scroll -${left}px -${top}px`;
+		} else if (pokemon.card === -1) {
+			cardBg = `transparent url(${Dex.resourcePrefix}sprites/cardicons-sheet.png?g8) no-repeat scroll 0px -180px`;
+		} else {
+			cardBg = `none`;
+		}
+		let cardslot = this.$statbar.find('.card');
+		cardslot.css('background', cardBg);
+
+		let status = '';
 		if (pokemon.status === 'brn') {
 			status += '<span class="brn">BRN</span> ';
 		} else if (pokemon.status === 'psn') {
@@ -2924,13 +2939,7 @@ export class PokemonSprite extends Sprite {
 		}
 
 		for (let i in pokemon.volatiles) {
-			if (i.startsWith('playingcard')) {
-				const num = +i[10];
-				const suit = ['S','M','L','F','A'].indexOf(i[11]);
-				const top = suit * 36;
-				const left = (num - 1) * 26;
-				cardBg = `transparent url(${Dex.resourcePrefix}sprites/cardicons-sheet.png?g8) no-repeat scroll -${left}px -${top}px`;
-			} else status += PokemonSprite.getEffectTag(i);
+			status += PokemonSprite.getEffectTag(i);
 		}
 		for (let i in pokemon.turnstatuses) {
 			if (i === 'roost' && !pokemon.getTypeList().includes('Flying')) continue;
@@ -2941,8 +2950,6 @@ export class PokemonSprite extends Sprite {
 		}
 		let statusbar = this.$statbar.find('.status');
 		statusbar.html(status);
-		let cardslot = this.$statbar.find('.card');
-		cardslot.css('background', cardBg);
 
 		let typesbuf = '';
 		const [types, addedType, elementTypes] = pokemon.getTypes() || [this.scene.battle.dex.species.get(pokemon.speciesForme).types, '', []];

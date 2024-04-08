@@ -657,6 +657,21 @@ class BattleTextParser {
 			return line1 + template.replace('[POKEMON]', this.pokemon(pokemon));
 		}
 
+		case '-card': {
+			const [, pokemon, card] = args;
+			let template = this.template('card');
+			if (+card > 0) {
+				const suits = ['Solitaries', 'Multiples', 'Links', 'Shards', 'Aberrations'];
+				const num = ((+card - 1) % 10);
+				const suit = suits[Math.floor((+card - 1) / 5)];
+				template = template.replace('[CARD]', `${num} of ${suit}`);
+			} else if (+card === -1) {
+				template = template.replace('[CARD]', 'card');
+			} else {
+				template = this.template('discardCard');
+			}
+			return template.replace('[POKEMON]', this.pokemon(pokemon));
+		}
 		case '-item': {
 			const [, pokemon, item] = args;
 			const id = BattleTextParser.effectId(kwArgs.from);

@@ -87,6 +87,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 	muPP = 3;
 	ability = '';
 	baseAbility = '';
+	card: number = 0;
 	item = '';
 	itemEffect = '';
 	prevItem = '';
@@ -2210,6 +2211,15 @@ export class Battle {
 			}
 
 			this.scene.resultAnim(poke, 'Team Cured', 'good');
+			this.log(args, kwArgs);
+			break;
+		}
+		case '-card': {
+			let poke = this.getPokemon(args[1])!;
+			let card = +args[2];
+			if (!(card >= -1 && card <= 50)) card = 0;
+			poke.card = card;
+			this.scene.updateStatbar(poke);	
 			this.log(args, kwArgs);
 			break;
 		}
