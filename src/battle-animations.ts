@@ -349,7 +349,7 @@ export class BattleScene implements BattleSceneStub {
 
 		left += (410 - 190) * ((loc.z!) / 200);
 		top += (135 - 245) * ((loc.z!) / 200);
-		left += Math.floor(loc.x! * scale);
+		left += Math.floor(loc.x! /* * scale */);
 		top -= Math.floor(loc.y! * scale /* - loc.x * scale / 4 */);
 		let width = Math.floor(obj.w * scale * loc.xscale!);
 		let height = Math.floor(obj.h * scale * loc.yscale!);
@@ -1096,6 +1096,7 @@ export class BattleScene implements BattleSceneStub {
 			opacity: 0,
 		}, this, pokemon.side.isFar);
 		if (sprite.$el) this.$sprites[+pokemon.side.isFar].append(sprite.$el);
+		console.log(sprite)
 		return sprite;
 	}
 
@@ -1861,6 +1862,7 @@ export class Sprite {
 		this.x = pos.x;
 		this.y = pos.y;
 		this.z = pos.z;
+		console.log(scene.pos(pos, sp))
 		if (pos.opacity !== 0 && spriteData) this.$el!.css(scene.pos(pos, sp));
 
 		if (!spriteData) {
@@ -2301,23 +2303,25 @@ export class PokemonSprite extends Sprite {
 		}
 
 		const sign = this.isFrontSprite ? 1 : -1;
-		switch (moreActive) {
-		case 0:
+		switch (this.scene.battle.gameType) {
+		case 'singles':
 			this.x = 0;
 			break;
-		case 1:
+		case 'doubles':
+		case 'multi':
 			this.x = (slot * -100 + 18) * sign;
+			statbarOffsetX = 200 * (this.isFrontSprite ? (1 - slot) : slot);
+			statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
 			break;
-		case 2:
-			this.x = (slot * -70 + 20) * sign;
+		case 'triples':
+			this.x = (slot * -140 + 20) * sign;
 			statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
-			statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot)
+			statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
+			break;
+		case 'freeforall':
 			break;
 		}
 		this.y = slot * 7 * sign;
-
-		if (this.isFrontSprite && !moreActive) statbarOffsetY = 15;
-		// if (this.isFrontSprite && moreActive === 2) statbarOffsetY = 28 * slot - 14;
 
 		let pos = this.scene.pos({
 			x: this.x,
@@ -2331,7 +2335,7 @@ export class PokemonSprite extends Sprite {
 
 		this.left = pos.left;
 		this.top = pos.top;
-		this.statbarLeft = 100 + (this.isFrontSprite ? 32 : 0) + statbarOffsetX;
+		this.statbarLeft = 100 +(this.isFrontSprite ? 32 : 0) + statbarOffsetX;
 		this.statbarTop = 40 + (this.isFrontSprite ? 0 : 130) + statbarOffsetY;
 		if (this.statbarTop < -4) this.statbarTop = -4;
 
