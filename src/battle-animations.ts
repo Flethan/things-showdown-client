@@ -2293,36 +2293,34 @@ export class PokemonSprite extends Sprite {
 	}
 	recalculatePos(slot: number) {
 		let moreActive = this.scene.activeCount - 1;
+		const sign = this.isFrontSprite ? 1 : -1;
 		let statbarOffsetX = 0;
 		let statbarOffsetY = 0;
-		const isFFA = this.scene.battle.gameType === 'freeforall';
-		//if (isFFA) {
-		//	// create a gap between Pokemon on the same "side" as a distinction between FFA and Multi battles
-		//	moreActive++;
-		//	if (slot) slot++;
-		//}
 
-		const sign = this.isFrontSprite ? 1 : -1;
-		switch (this.scene.battle.gameType) {
-		case 'singles':
-			this.x = 0;
-			break;
-		case 'doubles':
-		case 'multi':
-		case 'freeforall':
-			this.x = (slot * -100 + 18) * sign;
-			statbarOffsetX = 200 * (this.isFrontSprite ? (1 - slot) : slot);
-			statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
-			break;
-		case 'triples':
-			this.x = (slot * -140 + 20) * sign;
-			statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
-			if (this.isFrontSprite)
-			statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
-			break;
-			break;
-		}
 		this.y = slot * 7 * sign;
+		switch (this.scene.battle.gameType) {
+			case 'singles':
+				this.x = 0;
+				break;
+			case 'doubles':
+			case 'multi':
+				this.x = (slot * -100 + 18) * sign;
+				statbarOffsetX = 190 * (this.isFrontSprite ? (1 - slot) : slot);
+				statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
+				break;
+			case 'triples':
+				this.x = (slot * -140 + 20) * sign;
+				statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
+				if (this.isFrontSprite)
+				statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
+				break;
+			case 'freeforall':
+				this.x = (slot * -246 + 18) * sign;
+				this.y = 15 * sign - 5;
+				statbarOffsetX = 246 * (this.isFrontSprite ? (1 - slot) : slot);
+				// statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
+				break;
+		}
 
 		let pos = this.scene.pos({
 			x: this.x,
@@ -2862,10 +2860,11 @@ export class PokemonSprite extends Sprite {
 			updatePrevhp = true;
 		}
 		const moreActive = this.scene.activeCount - 1;
+		const barWidth = moreActive === 2 ? 104 : 154;
 		let hpcolor;
 		if (updatePrevhp || updateHp) {
 			hpcolor = BattleScene.getHPColor(pokemon);
-			let w = pokemon.hpWidth(163 - (moreActive * 30));
+			let w = pokemon.hpWidth(barWidth - 5);
 			let $hp = this.$statbar.find('.hp');
 			$hp.css({
 				width: w,
@@ -2878,7 +2877,7 @@ export class PokemonSprite extends Sprite {
 		}
 		if (updatePrevhp) {
 			let $prevhp = this.$statbar.find('.prevhp');
-			$prevhp.css('width', pokemon.hpWidth(163 - (moreActive * 30)) + 1);
+			$prevhp.css('width', pokemon.hpWidth(barWidth - 4));
 			if (hpcolor === 'g') $prevhp.removeClass('prevhp-yellow prevhp-red');
 			else if (hpcolor === 'y') $prevhp.removeClass('prevhp-red').addClass('prevhp-yellow');
 			else $prevhp.addClass('prevhp-yellow prevhp-red');
