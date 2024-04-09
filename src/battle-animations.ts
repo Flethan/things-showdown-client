@@ -1591,8 +1591,8 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		const moreActive = this.activeCount - 1;
-		let w = pokemon.hpWidth(164 - (moreActive * 32));
+		const barWidth = this.activeCount === 3 ? 104 : 154;
+		let w = pokemon.hpWidth(barWidth - 5);
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
 		if (hpcolor === 'g') {
@@ -2858,8 +2858,7 @@ export class PokemonSprite extends Sprite {
 			this.scene.$stat.append(this.$statbar);
 			updatePrevhp = true;
 		}
-		const moreActive = this.scene.activeCount - 1;
-		const barWidth = moreActive === 2 ? 104 : 154;
+		const barWidth = this.scene.activeCount === 3 ? 104 : 154;
 		let hpcolor;
 		if (updatePrevhp || updateHp) {
 			hpcolor = BattleScene.getHPColor(pokemon);
