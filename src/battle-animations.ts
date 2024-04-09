@@ -2315,10 +2315,9 @@ export class PokemonSprite extends Sprite {
 				statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
 				break;
 			case 'freeforall':
-				this.x = (slot * -246 + 18) * sign;
+				this.x = (slot * -246 + 30) * sign;
 				this.y = 15 * sign - 5;
 				statbarOffsetX = 246 * (this.isFrontSprite ? (1 - slot) : slot);
-				// statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
 				break;
 		}
 
@@ -2934,11 +2933,12 @@ export class PokemonSprite extends Sprite {
 		// } else if (pokemon.status === 'infected') {
 		// 	status += '<span class="infected">INF</span> ';
 		// }
-		for (const stat in pokemon.boosts) {
+		const STATS = ['atk', 'def', 'spa', 'spd', 'spe', 'evasion', 'accuracy', 'spc'];
+		STATS.forEach(stat => {
 			if (pokemon.boosts[stat]) {
 				status += '<span class="stat boost ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
 			}
-		}
+		});
 
 		for (let i in pokemon.volatiles) {
 			status += PokemonSprite.getEffectTag(i);

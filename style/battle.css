@@ -395,6 +395,8 @@ License: GPLv2
 	left: -32px;
 }
 .statbar .status {
+	padding: 0;
+	margin-left: 2px;
 	min-height: 10px;
 	font-size: 7pt;
 }
@@ -409,8 +411,9 @@ License: GPLv2
 	border-radius: 3px;
 }
 .statbar span.stat {
+	padding: 0;
 	margin-left: -1px;
-	width: 47px;
+	width: 48px;
 	display: inline-block;
 }
 .statbar span.brn,
