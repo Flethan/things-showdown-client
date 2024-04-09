@@ -136,6 +136,9 @@ License: GPLv2
 	min-height: 40px;
 	padding: 2px 4px;
 }
+.statbar.triples {
+	width: 108px;
+}
 .statbar strong {
 	margin: 0 -4px 0 2px;
 	display: block;
@@ -150,7 +153,7 @@ License: GPLv2
 .statbar .types {
 	display: block;
 	text-align: center;
-	margin: -3px -2px -3px 2px;
+	margin: -3px 0;
 }
 .statbar .types img {
 	vertical-align: top;
@@ -192,9 +195,6 @@ License: GPLv2
 }
 .statbar .hpbar.infected {
 	border-color: #ff00ff;
-}
-.triples {
-	width: 104px;
 }
 
 /* The declaration order of these hp* classes is significant. */
@@ -410,12 +410,6 @@ License: GPLv2
 	border: 1px solid #FF4400;
 	border-radius: 3px;
 }
-.statbar span.stat {
-	padding: 0;
-	margin-left: -1px;
-	width: 48px;
-	display: inline-block;
-}
 .statbar span.brn,
 .statbar span.psn,
 .statbar span.slp,
@@ -506,6 +500,11 @@ License: GPLv2
 	text-align: center;
 }
 .statbar span.boost {
+	padding: 0;
+	margin-left: -1px;
+	padding-left: 2px;
+	width: 46px;
+	display: inline-block;
 	text-align: left;
 	font-weight: 900;
 }

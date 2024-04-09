@@ -350,7 +350,7 @@ export class BattleScene implements BattleSceneStub {
 		left += (410 - 190) * ((loc.z!) / 200);
 		top += (135 - 245) * ((loc.z!) / 200);
 		left += Math.floor(loc.x! /* * scale */);
-		top -= Math.floor(loc.y! * scale /* - loc.x * scale / 4 */);
+		top -= Math.floor(loc.y! /* * scale - loc.x * scale / 4 */);
 		let width = Math.floor(obj.w * scale * loc.xscale!);
 		let height = Math.floor(obj.h * scale * loc.yscale!);
 		let hoffset = Math.floor((obj.h - (obj.y || 0) * 2) * scale * loc.yscale!);
@@ -1566,7 +1566,7 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		const pw = this.activeCount === 3 ? 104 : 154;
+		const pw = this.activeCount === 3 ? 108 : 154;
 		let w = pokemon.hpWidth(pw - 4);
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
@@ -1591,7 +1591,7 @@ export class BattleScene implements BattleSceneStub {
 		pokemon.sprite.updateHPText(pokemon);
 
 		let $hp = pokemon.sprite.$statbar.find('div.hp');
-		const barWidth = this.activeCount === 3 ? 104 : 154;
+		const barWidth = this.activeCount === 3 ? 108 : 154;
 		let w = pokemon.hpWidth(barWidth - 5);
 		let hpcolor = BattleScene.getHPColor(pokemon);
 		let callback;
@@ -2292,31 +2292,38 @@ export class PokemonSprite extends Sprite {
 		}
 	}
 	recalculatePos(slot: number) {
-		let moreActive = this.scene.activeCount - 1;
-		const sign = this.isFrontSprite ? 1 : -1;
 		let statbarOffsetX = 0;
 		let statbarOffsetY = 0;
 
-		this.y = slot * 7 * sign;
+		const sign = this.isFrontSprite ? 1 : -1;
 		switch (this.scene.battle.gameType) {
 			case 'singles':
 				this.x = 0;
+				statbarOffsetX = 28
+				if (this.isFrontSprite) statbarOffsetX = 218;
+				if (!this.isFrontSprite) statbarOffsetY = -48;
+				this.y = -10;
 				break;
 			case 'doubles':
 			case 'multi':
-				this.x = (slot * -100 + 18) * sign;
-				statbarOffsetX = 190 * (this.isFrontSprite ? (1 - slot) : slot);
+				this.x = (slot * -(154 + 32 + 4) + 29) * sign;
+				if (this.isFrontSprite) this.y = slot * 10;
+				else this.y = slot * -10 - 30;
+				statbarOffsetX = (154 + 32 + 4) * (this.isFrontSprite ? (1 - slot) : slot);
+				if (this.isFrontSprite) statbarOffsetX += 56;
 				statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
 				break;
 			case 'triples':
-				this.x = (slot * -140 + 20) * sign;
-				statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
-				if (this.isFrontSprite)
+				this.x = (slot * -(108 + 32 + 4) + 52) * sign;
+				if (this.isFrontSprite) this.y = (slot - 1) * 10;
+				else this.y = slot * -10 - 30;
+				statbarOffsetX = (108 + 32 + 4) * (this.isFrontSprite ? (2 - slot) : slot);
+				if (this.isFrontSprite) statbarOffsetX += 4;
 				statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
 				break;
 			case 'freeforall':
 				this.x = (slot * -246 + 30) * sign;
-				this.y = 15 * sign - 5;
+				this.y = 40 * sign - 20;
 				statbarOffsetX = 246 * (this.isFrontSprite ? (1 - slot) : slot);
 				break;
 		}
@@ -2337,7 +2344,7 @@ export class PokemonSprite extends Sprite {
 		this.statbarTop = 40 + (this.isFrontSprite ? 0 : 130) + statbarOffsetY;
 		if (this.statbarTop < -4) this.statbarTop = -4;
 
-		if (moreActive) {
+		if (this.scene.activeCount > 1) {
 			// make sure element is in the right z-order
 			if (!!slot === this.isFrontSprite) {
 				this.$el.prependTo(this.$el.parent());
@@ -2820,7 +2827,7 @@ export class PokemonSprite extends Sprite {
 		}
 
 		buf += `</strong><div class="types">`;
-		buf += `</div><div class="hpbar ${format}"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="card"></div><div class="status"></div>`;
+		buf += `</div><div class="hpbar"><div class="hptext"></div><div class="hptextborder"></div><div class="prevhp"><div class="hp"></div></div><div class="card"></div><div class="status"></div>`;
 		buf += `</div>`;
 		return buf;
 	}
@@ -2858,7 +2865,7 @@ export class PokemonSprite extends Sprite {
 			this.scene.$stat.append(this.$statbar);
 			updatePrevhp = true;
 		}
-		const barWidth = this.scene.activeCount === 3 ? 104 : 154;
+		const barWidth = this.scene.activeCount === 3 ? 108 : 154;
 		let hpcolor;
 		if (updatePrevhp || updateHp) {
 			hpcolor = BattleScene.getHPColor(pokemon);
@@ -2935,7 +2942,7 @@ export class PokemonSprite extends Sprite {
 		const STATS = ['atk', 'def', 'spa', 'spd', 'spe', 'evasion', 'accuracy', 'spc'];
 		STATS.forEach(stat => {
 			if (pokemon.boosts[stat]) {
-				status += '<span class="stat boost ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
+				status += '<span class="boost ' + pokemon.getBoostType(stat as BoostStatName) + '">' + pokemon.getBoost(stat as BoostStatName) + '</span>&ZeroWidthSpace;';
 			}
 		});
 
