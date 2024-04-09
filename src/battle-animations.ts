@@ -2296,11 +2296,11 @@ export class PokemonSprite extends Sprite {
 		let statbarOffsetX = 0;
 		let statbarOffsetY = 0;
 		const isFFA = this.scene.battle.gameType === 'freeforall';
-		if (isFFA) {
-			// create a gap between Pokemon on the same "side" as a distinction between FFA and Multi battles
-			moreActive++;
-			if (slot) slot++;
-		}
+		//if (isFFA) {
+		//	// create a gap between Pokemon on the same "side" as a distinction between FFA and Multi battles
+		//	moreActive++;
+		//	if (slot) slot++;
+		//}
 
 		const sign = this.isFrontSprite ? 1 : -1;
 		switch (this.scene.battle.gameType) {
@@ -2309,6 +2309,7 @@ export class PokemonSprite extends Sprite {
 			break;
 		case 'doubles':
 		case 'multi':
+		case 'freeforall':
 			this.x = (slot * -100 + 18) * sign;
 			statbarOffsetX = 200 * (this.isFrontSprite ? (1 - slot) : slot);
 			statbarOffsetY = 10 * (this.isFrontSprite ? (1 - slot) : slot);
@@ -2316,9 +2317,9 @@ export class PokemonSprite extends Sprite {
 		case 'triples':
 			this.x = (slot * -140 + 20) * sign;
 			statbarOffsetX = 145 * (this.isFrontSprite ? (2 - slot) : slot);
+			if (this.isFrontSprite)
 			statbarOffsetY = 10 * (this.isFrontSprite ? (2 - slot) : slot);
 			break;
-		case 'freeforall':
 			break;
 		}
 		this.y = slot * 7 * sign;
