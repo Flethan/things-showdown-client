@@ -1544,6 +1544,11 @@ class BattleTooltips {
 			value.itemModify(1.1, "Wide Lens");
 		}
 
+		if (pokemon.status === 'blinded' && !value.tryItem('Eyeball')) {
+			accuracyModifiers.push(0.75 * 4096);
+			value.modify(0.75, "Blinded");
+		}
+
 		// Chaining modifiers
 		let chain = 4096;
 		for (const mod of accuracyModifiers) {
@@ -1560,19 +1565,26 @@ class BattleTooltips {
 			if (value.tryWeather('Desolate Land')) value.set(50, 'Desolate Land');
 		}
 
+		if (pokemon?.boosts.accuracy) {
+			let boost = pokemon?.boosts.accuracy;
+			let delta = 0;
+			const boostTable = [0, 12, 24, 36, 48, 60, 72];
+			if (boost > 6) boost = 6;
+			if (boost < -6) boost = -6;
+			if (boost >= 0) {
+				delta += boostTable[boost];
+			} else {
+				delta -= boostTable[-boost];
+			}
+			value.set(Math.floor(value.value + delta));
+			if (value.value < 0) value.set(0);
+		}
+
 		// Chained modifiers round down on 0.5
 		let accuracyAfterChain = (value.value * chain) / 4096;
 		accuracyAfterChain = accuracyAfterChain % 1 > 0.5 ? Math.ceil(accuracyAfterChain) : Math.floor(accuracyAfterChain);
 		value.set(accuracyAfterChain);
 
-		// Unlike for Atk, Def, etc. accuracy and evasion boosts are applied after modifiers
-		if (pokemon?.boosts.accuracy) {
-			if (pokemon.boosts.accuracy > 0) {
-				value.set(Math.floor(value.value * (pokemon.boosts.accuracy + 3) / 3));
-			} else {
-				value.set(Math.floor(value.value * 3 / (3 - pokemon.boosts.accuracy)));
-			}
-		}
 
 		// 1/256 glitch
 		if (this.battle.gen === 1 && !toID(this.battle.tier).includes('stadium')) {
