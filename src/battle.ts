@@ -3060,7 +3060,8 @@ export class Battle {
 			let fromeffect = Dex.getEffect(kwArgs.from);
 			this.activateAbility(poke, fromeffect);
 			let maxTimeLeft = 0;
-			if (effect.id.endsWith('terrain')) {
+			const landscapes = ['richsoil', 'spatialexpansion', 'greenground', 'sudscape', 'mysticalsong', 'nullland', 'springfloor', 'invitingsurroundings'];
+			if (effect.id.endsWith('terrain') || landscapes.includes(effect.id)) {
 				for (let i = this.pseudoWeather.length - 1; i >= 0; i--) {
 					let pwID = toID(this.pseudoWeather[i][0]);
 					if (pwID.endsWith('terrain')) {
@@ -3070,7 +3071,6 @@ export class Battle {
 				}
 				if (this.gen > 6) maxTimeLeft = 8;
 			}
-			const landscapes = ['richsoil', 'spatialexpansion', 'greenground', 'sudscape', 'mysticalsong', 'nullland', 'springfloor', 'invitingsurroundings'];
 			if (landscapes.includes(effect.id)) maxTimeLeft = 10;
 			this.addPseudoWeather(effect.name, 5, maxTimeLeft);
 
