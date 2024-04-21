@@ -142,7 +142,7 @@ class BattleTextParser {
 
 			if (id === 'symbiosis' || id === 'poltergeist') {
 				kwArgs.item = arg3;
-			} else if (id === 'magnitude') {
+			} else if (id === 'magnitude' || id === 'hurricanewinds') {
 				kwArgs.number = arg3;
 			} else if (id === 'skillswap' || id === 'mummy' || id === 'wanderingspirit') {
 				kwArgs.ability = arg3;
