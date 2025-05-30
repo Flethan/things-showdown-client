@@ -79,7 +79,7 @@ process.stdout.write("Compiling TS files... ");
 const compileStartTime = process.hrtime();
 let compiledFiles = 0;
 
-// Babel can't find babelrc if we try to compile stuff in caches/pokemon-showdown/ fsr
+// Babel can't find babelrc if we try to compile stuff in caches/things-showdown/ fsr
 // eslint-disable-next-line no-eval
 const compileOpts = Object.assign(eval('(' + fs.readFileSync('.babelrc') + ')'), {
 	babelrc: false,
@@ -89,7 +89,7 @@ const compileOpts = Object.assign(eval('(' + fs.readFileSync('.babelrc') + ')'),
 if (process.argv[2] === 'full') {
 	delete compileOpts.ignore;
 	compiler.compileToDir(
-		['caches/pokemon-showdown/server/chat-formatter.ts', 'caches/pokemon-showdown/sim/teams.ts'],
+		['caches/things-showdown/server/chat-formatter.ts', 'caches/things-showdown/sim/teams.ts'],
 		'play.pokemonshowdown.com/js/server/',
 		compileOpts
 	);
@@ -117,7 +117,7 @@ try {
 			'play.pokemonshowdown.com/src/battle-dex-data.ts',
 			'play.pokemonshowdown.com/src/battle-log.ts',
 			'play.pokemonshowdown.com/src/battle-log-misc.js',
-			'caches/pokemon-showdown/server/chat-formatter.ts',
+			'caches/things-showdown/server/chat-formatter.ts',
 			'play.pokemonshowdown.com/data/text.js',
 			'play.pokemonshowdown.com/data/text-afd.js',
 			'play.pokemonshowdown.com/src/battle-text-parser.ts',
